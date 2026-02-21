@@ -4,7 +4,7 @@ namespace L2 {
 
 
     std::vector<std::string> ARG_REGS = {"rdi", "rsi", "rdx", "rcx", "r8", "r9"};
-    std::vector<std::string> CALLER_SAVED_REGS = {"r10", "r11", "r8", "rax", "rcx", "rdi", "rdx", "rsi"};
+    std::vector<std::string> CALLER_SAVED_REGS = {"r9", "r10", "r11", "r8", "rax", "rcx", "rdi", "rdx", "rsi"};
     std::vector<std::string> CALLEE_SAVED_REGS = {"r12", "r13", "r14", "r15", "rbp", "rbx"};
 
     void Instruction_ret::set_gen_set() {

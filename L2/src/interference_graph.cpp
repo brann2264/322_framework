@@ -62,7 +62,26 @@ namespace L2 {
 
             // create all regs
             for (std::string reg : COLOR_TO_REG) {
-                graph.insert({reg, Node(reg)});
+               graph.insert({reg, Node(reg)});
+            }
+
+            auto sx_i = dynamic_cast<Instruction_W_sop_SX*>(instruction.get());
+
+            // special case: connect var to all other regs if is a shift op
+            if (sx_i != nullptr) {
+                auto var_ptr = dynamic_cast<Variable*>(sx_i->sx.get());
+                if (var_ptr != nullptr) {
+
+                    if (graph.find(var_ptr->var_name) == graph.end()) 
+                        graph.insert({var_ptr->var_name, Node(var_ptr->var_name)});
+                    
+                    for (std::string reg : COLOR_TO_REG){
+
+                        if (reg == "rcx") continue;
+                        graph.at(reg).neighbors.insert(var_ptr->var_name);
+                        graph.at(var_ptr->var_name).neighbors.insert(reg);
+                    }
+                }
             }
             
             // in_set edges

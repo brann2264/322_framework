@@ -278,7 +278,6 @@ namespace L2 {
       void set_gen_set() override;
       void set_kill_set() override;
 
-    private:
       std::unique_ptr<X> w;
       std::unique_ptr<ShiftOp> sop;
       std::unique_ptr<X> sx;
