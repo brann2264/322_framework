@@ -508,11 +508,14 @@ namespace L2 {
       std::string name;
       int64_t arguments;
       std::vector<std::unique_ptr<Instruction>> instructions;
+      std::unordered_map<std::string, Node> graph;
 
       std::unordered_map<std::string, int> labels_index;
       std::string to_string() const;
       void generate_code(std::ofstream& stream) const;
-      void determine_liveness();
+      void determine_liveness(bool verbose);
+      void construct_graph(bool verbose);
+      void color_graph();
   };
 
   class Program{
@@ -522,7 +525,9 @@ namespace L2 {
 
       std::string to_string() const;
       void generate_code(std::ofstream& stream) const;
-      void determine_liveness();
+      void determine_liveness(bool verbose);
+      void construct_graphs(bool verbose);
+
   };
 
 }

@@ -339,7 +339,7 @@ namespace L2 {
     return str_rep;
   }
   void Function::generate_code(std::ofstream& stream) const {pass();}
-  void Function::determine_liveness() {
+  void Function::determine_liveness(bool verbose) {
 
     for (auto& instruction : instructions) {
       instruction->set_gen_set();
@@ -375,6 +375,7 @@ namespace L2 {
       }
     }
 
+    if (verbose) {
     std::cout << "(\n(in" << std::endl;
     
     for (auto& instruction :  instructions){
@@ -411,6 +412,7 @@ namespace L2 {
 
     std::cout << ")\n\n)" << std::endl;
   }
+  }
 
 
   std::string Program::to_string() const {
@@ -423,10 +425,12 @@ namespace L2 {
     return str_rep;
   }
   void Program::generate_code(std::ofstream& stream) const {pass();}
-  void Program::determine_liveness() {
-    
-    for (auto& f: functions){
-      f->determine_liveness();
+  void Program::determine_liveness(bool verbose)
+  {
+
+    for (auto &f : functions)
+    {
+      f->determine_liveness(verbose);
     }
   }
 
