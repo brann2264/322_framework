@@ -10,6 +10,8 @@
 #include <set>
 #include <unordered_map>
 
+#include "interference_graph.h"
+
 namespace L2 {
 
   enum class ItemType{Item, Name, Label, FunctionName, Number, Comparator, ShiftOp, AssignmentOp, Register, MemoryAccess, Variable};

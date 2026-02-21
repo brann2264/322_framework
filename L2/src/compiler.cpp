@@ -93,7 +93,7 @@ int main(int argc, char **argv)
      */
     auto p = L2::parse_liveness(argv[optind]);
     // std::cout << "liveness parsing done" << std::endl;
-    p.determine_liveness();
+    p.determine_liveness(true);
 
     if (verbose)
       std::cout << std::endl << p.to_string();
@@ -104,6 +104,12 @@ int main(int argc, char **argv)
      * Parse an L2 function.
      */
     // TODO
+    auto p = L2::parse_liveness(argv[optind]);
+    p.determine_liveness(false);
+    p.construct_graphs(true);
+
+    if (verbose)
+       std::cout << std::endl << p.to_string();
 
   } else {
 
