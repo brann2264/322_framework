@@ -14,6 +14,8 @@
 
 namespace L2 {
 
+  class Function;
+
   enum class ItemType{Item, Name, Label, FunctionName, Number, Comparator, ShiftOp, AssignmentOp, Register, MemoryAccess, Variable};
   inline int64_t itemTypeToInt(ItemType type) {
     switch (type) {
@@ -36,7 +38,7 @@ namespace L2 {
     public:
       virtual ~Item() = default;
       virtual std::string to_string() const = 0;
-      virtual void generate_code(std::ofstream& stream) const = 0;
+      virtual void generate_code(std::ofstream& stream, const Function& parent_function) const = 0;
       ItemType type = ItemType::Item;
   };
 
@@ -66,7 +68,7 @@ namespace L2 {
 
     Name(std::string _name) : name(_name) {type = ItemType::Name;}
 
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -75,7 +77,7 @@ namespace L2 {
 
     Label(std::string _label_name) : label_name(_label_name) {type = ItemType::Label;}
     
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -84,7 +86,7 @@ namespace L2 {
 
     FunctionName(std::string _function_name) : function_name(_function_name) {type = ItemType::FunctionName;}
     
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -93,7 +95,7 @@ namespace L2 {
 
     Number(int64_t _number) : number(_number) {type = ItemType::Number;}
     
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -102,7 +104,7 @@ namespace L2 {
 
     Variable(std::string _var_name) : var_name(_var_name) {type = ItemType::Variable;};
 
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -113,7 +115,7 @@ namespace L2 {
 
     Comparator(EComparator _cmp) : cmp(_cmp) {type = ItemType::Comparator;}
     
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -124,7 +126,7 @@ namespace L2 {
 
     ShiftOp(EShiftOperator _shift_op) : shift_op(_shift_op) {type = ItemType::ShiftOp;}
     
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -135,7 +137,7 @@ namespace L2 {
 
     AssignmentOp(EAssignmentOperator _assign_op) : assign_op(_assign_op) {type = ItemType::AssignmentOp;}
     
-    void generate_code(std::ofstream& stream) const override;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -145,8 +147,7 @@ namespace L2 {
 
     Register(ERegister _reg) : reg(_reg) {type = ItemType::Register;}
     
-    void generate_code(std::ofstream& stream) const override;
-    void generate_code_b(std::ofstream& stream) const;
+    void generate_code(std::ofstream& stream, const Function& parent_function) const override;
     std::string to_string() const override;
   };
 
@@ -156,10 +157,11 @@ namespace L2 {
       MemoryAccess(std::unique_ptr<X> x, std::unique_ptr<Number> M);
       
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       X* get_X() const {
         return x.get();
       }
+      bool spill(std::string var_name, std::string spilled_name);
 
     private:
       std::unique_ptr<X> x;
@@ -173,12 +175,16 @@ namespace L2 {
     public:
       virtual ~Instruction() = default;
       virtual std::string to_string() const = 0;
-      virtual void generate_code(std::ofstream& stream) const = 0;
+      virtual void generate_code(std::ofstream& stream, const Function& parent_function) const = 0;
       virtual void set_gen_set() = 0;
       virtual void set_kill_set() = 0;
 
       virtual std::vector<int> get_successor(const std::unordered_map<std::string, int>& label_mapping, int instruction_idx) const {
         return {instruction_idx+1};
+      }
+
+      virtual std::pair<bool,bool> spill(std::string var_name, std::string spilled_name){
+        return {false, false};
       }
 
       std::set<std::string> gen_set;
@@ -193,12 +199,11 @@ namespace L2 {
   class Instruction_ret : public Instruction{
     public:
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
       std::vector<int> get_successor(const std::unordered_map<std::string, int>& label_mapping, int instruction_idx) const override;
   
-
       int64_t arguments;
       int64_t locals;
 
@@ -208,9 +213,10 @@ namespace L2 {
     public:
       Instruction_S_to_W_assignment (std::unique_ptr<S> s, std::unique_ptr<X> w);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<S> s;
@@ -221,9 +227,10 @@ namespace L2 {
     public:
       Instruction_Mem_to_W_assignment (std::unique_ptr<MemoryAccess> memory_access, std::unique_ptr<X> w);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<MemoryAccess> memory_access;
@@ -234,9 +241,10 @@ namespace L2 {
     public:
       Instruction_S_to_Mem_assignment (std::unique_ptr<S> s, std::unique_ptr<MemoryAccess> memory_access);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<S> s;
@@ -247,9 +255,10 @@ namespace L2 {
     public:
       Instruction_Stack_Arg_M_to_W (std::unique_ptr<Number> m, std::unique_ptr<X> w);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<Number> m;
@@ -260,9 +269,10 @@ namespace L2 {
     public:
       Instruction_W_aop_T (std::unique_ptr<X> w, std::unique_ptr<AssignmentOp> aop, std::unique_ptr<T> t);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<X> w;
@@ -274,9 +284,10 @@ namespace L2 {
     public:
       Instruction_W_sop_SX (std::unique_ptr<X> w, std::unique_ptr<ShiftOp> sop, std::unique_ptr<X> sx);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
       std::unique_ptr<X> w;
       std::unique_ptr<ShiftOp> sop;
@@ -287,9 +298,10 @@ namespace L2 {
     public:
       Instruction_W_sop_N (std::unique_ptr<X> w, std::unique_ptr<ShiftOp> sop, std::unique_ptr<Number> number);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<X> w;
@@ -301,9 +313,10 @@ namespace L2 {
     public:
       Instruction_Mem_increment_T(std::unique_ptr<MemoryAccess> mem, std::unique_ptr<T> t);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<MemoryAccess> memory_access;
@@ -314,9 +327,10 @@ namespace L2 {
     public:
       Instruction_Mem_decrement_T(std::unique_ptr<MemoryAccess> mem, std::unique_ptr<T> t);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<MemoryAccess> memory_access;
@@ -327,9 +341,10 @@ namespace L2 {
     public:
       Instruction_W_increment_Mem(std::unique_ptr<X> w, std::unique_ptr<MemoryAccess> mem);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<MemoryAccess> memory_access;
@@ -340,9 +355,10 @@ namespace L2 {
     public:
       Instruction_W_decrement_Mem(std::unique_ptr<X> w, std::unique_ptr<MemoryAccess> mem);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<MemoryAccess> memory_access;
@@ -353,7 +369,7 @@ namespace L2 {
     public:
       Instruction_label (std::string _label_name) : label_name(_label_name) {};
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
 
@@ -365,9 +381,10 @@ namespace L2 {
     public:
       Instruction_function_call(std::unique_ptr<U> call_target, int64_t arg_count);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
 
     private:
       std::unique_ptr<U> call_target;
@@ -378,7 +395,7 @@ namespace L2 {
     public:
       Instruction_print_call() {}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
   };
@@ -387,9 +404,10 @@ namespace L2 {
     public:
       Instruction_W_T_cmp_T(std::unique_ptr<X> w, std::unique_ptr<T> operand1, std::unique_ptr<Comparator> cmp, std::unique_ptr<T> operand2);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
     
     private:
       std::unique_ptr<X> w;
@@ -402,11 +420,12 @@ namespace L2 {
     public:
       Instruction_cjump_T_cmp_T_label(std::unique_ptr<T> operand1, std::unique_ptr<Comparator> cmp, std::unique_ptr<T> operand2, std::unique_ptr<Label> label);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
       std::vector<int> get_successor(const std::unordered_map<std::string, int>& label_mapping, int instruction_idx) const override;
-  
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
+
     private:
       std::unique_ptr<T> operand1;
       std::unique_ptr<Comparator> cmp;
@@ -418,7 +437,7 @@ namespace L2 {
     public:
       Instruction_goto_label(std::unique_ptr<Label> label);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
       std::vector<int> get_successor(const std::unordered_map<std::string, int>& label_mapping, int instruction_idx) const override;
@@ -431,7 +450,7 @@ namespace L2 {
     public:
       Instruction_input(){}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
   };
@@ -439,7 +458,7 @@ namespace L2 {
     public:
       Instruction_allocate(){}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
   };
@@ -447,7 +466,7 @@ namespace L2 {
     public:
       Instruction_tuple_error(){}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
       std::vector<int> get_successor(const std::unordered_map<std::string, int>& label_mapping, int instruction_idx) const override;
@@ -456,7 +475,7 @@ namespace L2 {
     public:
       Instruction_tensor_error(std::unique_ptr<Number> F);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
       std::vector<int> get_successor(const std::unordered_map<std::string, int>& label_mapping, int instruction_idx) const override;
@@ -468,9 +487,10 @@ namespace L2 {
     public:
       Instruction_W_increment(std::unique_ptr<X> w);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
     
     private:
       std::unique_ptr<X> w;
@@ -479,9 +499,10 @@ namespace L2 {
     public:
       Instruction_W_decrement(std::unique_ptr<X> w);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
     
     private:
       std::unique_ptr<X> w;
@@ -490,9 +511,10 @@ namespace L2 {
     public:
       Instruction_address_calculation(std::unique_ptr<X> w1, std::unique_ptr<X> w2, std::unique_ptr<X> w3, std::unique_ptr<Number> num);
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, const Function& parent_function) const override;
       void set_gen_set() override;
       void set_kill_set() override;
+      std::pair<bool,bool> spill(std::string var_name, std::string spilled_name) override;
     
     private:
       std::unique_ptr<X> w1;
@@ -510,13 +532,16 @@ namespace L2 {
       int64_t arguments;
       std::vector<std::unique_ptr<Instruction>> instructions;
       std::unordered_map<std::string, Node> graph;
+      int spill_count = 0;
+      int locals = 0;
 
       std::unordered_map<std::string, int> labels_index;
       std::string to_string() const;
       void generate_code(std::ofstream& stream) const;
       void determine_liveness(bool verbose);
       void construct_graph(bool verbose);
-      void color_graph();
+      void color_graph(bool verbose);
+      void spill_var(std::string var_name, std::string spill_prefix);
   };
 
   class Program{
@@ -524,10 +549,16 @@ namespace L2 {
       std::string entryPointLabel;
       std::vector<std::unique_ptr<Function>> functions;
 
+      // for spill test
+      std::string spill_variable;
+      std::string spill_prefix;
+
       std::string to_string() const;
       void generate_code(std::ofstream& stream) const;
       void determine_liveness(bool verbose);
       void construct_graphs(bool verbose);
+      void allocate_registers();
+      void spill_test(bool verbose);
 
   };
 

@@ -2,58 +2,20 @@
 
 namespace L2 {
 
-    std::unordered_map<std::string, int> REG_TO_COLOR = {
-        // caller saved
-        {"rax", 0},
-        {"rcx", 1},
-        {"rdx", 2},
-        {"rsi", 3},
-        {"rdi", 4},
-        {"r8",  5},
-        {"r9",  6},
-        {"r10", 7},
-        {"r11", 8},
-        // callee saved
-        {"rbx", 9},
-        {"rbp", 10},
-        {"r12", 11},
-        {"r13", 12},
-        {"r14", 13},
-        {"r15", 14}
-    };
+    Node::Node(std::string var_name) : var_name(var_name), removed(false), color(-1) {
 
-    std::vector<std::string> COLOR_TO_REG = {
-        "rax",   // 0
-        "rcx",   // 1
-        "rdx",   // 2
-        "rsi",   // 3
-        "rdi",   // 4
-        "r8",    // 5
-        "r9",    // 6
-        "r10",   // 7
-        "r11",   // 8
-        "rbx",   // 9
-        "rbp",   // 10
-        "r12",   // 11
-        "r13",   // 12
-        "r14",   // 13
-        "r15"    // 14
-    };
+        for (int i = 0; i < 15; i++){
+            colorable.push_back(true);
+        }
 
-    Node::Node(std::string var_name) : var_name(var_name) {
-        
-        if (REG_TO_COLOR.find(var_name) == REG_TO_COLOR.end()) {
-            color = -1;
-        } else {
-            color = REG_TO_COLOR[var_name];
-
+        if (REG_TO_COLOR.find(var_name) != REG_TO_COLOR.end()) {
             for (std::string reg : COLOR_TO_REG) {
                 if (reg == var_name) continue;
                 neighbors.insert(reg);
             }
-        }        
-    }
+        }
 
+    }
 
     void Function::construct_graph(bool verbose) {
         // assumes determine liveness is already run
@@ -166,7 +128,114 @@ namespace L2 {
         }
     }
 
-    void Function::color_graph() {
-        
+    void Node::remove_node(std::unordered_map<std::string, Node>& graph){
+        removed = true;
+
+        for (std::string neighbor : neighbors){
+            graph.at(neighbor).degree -= 1;
+        }
     }
+
+    void Node::color_node(std::unordered_map<std::string, Node>& graph){
+        
+        if (REG_TO_COLOR.find(var_name) != REG_TO_COLOR.end()){
+            color = REG_TO_COLOR.at(var_name);
+        } else {
+            for (int i = 0; i < 15; i++){
+                if (colorable[i]){
+                    color = i;
+                    break;
+                }
+            }
+            // spill
+            if (color == -1) return;
+        }
+
+        for (std::string neighbor : neighbors){
+            graph.at(neighbor).colorable[color] = false;
+        }
+    }
+
+    void Function::color_graph(bool verbose) {
+        
+        std::vector<std::string> coloring_stack;
+
+        for (auto& node : graph){
+            node.second.degree = node.second.neighbors.size();
+        }
+
+        // remove nodes starting from node with highest number of edges
+        while (true) {
+            std::string max_node;
+            int max_degree = -1;
+
+            for (auto& node : graph){
+
+                if (REG_TO_COLOR.find(node.first) != REG_TO_COLOR.end()) continue;
+
+                if (!node.second.removed && node.second.degree > max_degree){
+                    max_node = node.first;
+                    max_degree = node.second.degree;
+                }
+            }
+
+            if (max_node.empty()){
+                break;
+            }
+            graph.at(max_node).remove_node(graph);
+            coloring_stack.push_back(max_node);
+        }
+
+        // color registers first
+        for (std::string reg : COLOR_TO_REG){
+            graph.at(reg).color_node(graph);
+        }
+
+        // color according to stack
+
+        while (coloring_stack.size() != 0){
+            std::string node = coloring_stack.back();
+            coloring_stack.pop_back();
+
+            graph.at(node).color_node(graph);
+        }
+
+        if (verbose){
+            for (auto& node : graph){
+                std::cout << node.first << " : " << node.second.color << std::endl;
+            }
+        }
+    }
+
+    void Program::allocate_registers(){
+
+        for (auto& f : functions){
+
+            bool colorable = false;
+
+            while (!colorable){
+
+                f->determine_liveness(false);
+                f->construct_graph(false);
+                f->color_graph(true);
+
+                bool hasSpilled = false;
+
+                for (auto& node : f->graph){
+                    if (node.second.color == -1){
+                        f->spill_var(node.first, "S");
+                        hasSpilled = true;
+                        break;
+                    }
+                }
+
+                colorable = !hasSpilled;
+            }
+
+            std::cout << f->name << " colored" << std::endl;
+            
+        }
+
+    }
+
 }

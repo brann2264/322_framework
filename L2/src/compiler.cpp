@@ -13,6 +13,7 @@
 #include <iostream>
 #include <assert.h>
 #include "parser.h"
+#include "code_generator.h"
 
 using namespace std;
 
@@ -85,6 +86,9 @@ int main(int argc, char **argv)
      * Parse an L2 function and the spill arguments.
      */
     // TODO
+    auto p = L2::parse_spill(argv[optind]);
+
+    p.spill_test(true);
  
   } else if (liveness_only){
 
@@ -123,6 +127,10 @@ int main(int argc, char **argv)
     if (verbose)
       std::cout << std::endl << p.to_string();
 
+    p.allocate_registers();
+    L2::generate_code(p);
+
+
     /*
      * Check if the L2 program is correct.
      */
@@ -133,42 +141,6 @@ int main(int argc, char **argv)
    * Transform the code.
    */
   // TODO
-
-  /*
-   * Special cases.
-   */
-  if (spill_only){
-
-    /*
-     * Spill.
-     */
-    // TODO
-
-    /*
-     * Dump the resulting L2 code.
-     */
-    // TODO
-
-    return 0;
-  }
-
-  /*
-   * Liveness test.
-   */
-  if (liveness_only){
-    // TODO
-
-    return 0;
-  }
-
-  /*
-   * Interference graph test.
-   */
-  if (interference_only){
-    // TODO
-
-    return 0;
-  }
 
   /*
    * Print a single L2 function case.

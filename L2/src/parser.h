@@ -5,4 +5,5 @@
 namespace L2{
   Program parse_file (char *fileName);
   Program parse_liveness(char *fileName);
+  Program parse_spill(char *fileName);
 }

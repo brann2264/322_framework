@@ -662,6 +662,9 @@ namespace L2
     {
     };
 
+    struct Spill_var_rule : var {};
+    struct Spill_prefix_rule : var {}; 
+
     struct entry_point_rule : pegtl::seq<
                                   seps_with_comments,
                                   pegtl::seq<spaces, pegtl::one<'('>>,
@@ -679,6 +682,16 @@ namespace L2
                          entry_point_rule>
     {
     };
+
+    struct spill_test_grammar : pegtl::seq<
+        pegtl::plus< Function_rule >,      
+        pegtl::star< pegtl::space >,        
+        Spill_var_rule,               
+        pegtl::star< pegtl::space >,        
+        Spill_prefix_rule,                  
+        pegtl::star< pegtl::space >,
+        pegtl::eof                          
+    > {};
 
 
     /*
@@ -1536,6 +1549,44 @@ namespace L2
             p.functions.back()->instructions.push_back(std::move(i));
         }
     };
+
+    template<> struct action< Spill_var_rule > {
+        template< typename Input >
+        static void apply( const Input& in, Program& p ) {
+            p.spill_variable = in.string().substr(1);
+        }
+    };
+
+    // Action to capture the prefix string
+    template<> struct action< Spill_prefix_rule > {
+        template< typename Input >
+        static void apply( const Input& in, Program& p ) {
+            p.spill_prefix = in.string().substr(1);
+        }
+    };
+
+    Program parse_spill(char *fileName){
+        if (pegtl::analyze<grammar>() != 0)
+        {
+            std::cerr << "There are problems with the grammar" << std::endl;
+            exit(1);
+        }
+
+        /*
+         * Parse.
+         */
+        file_input<> fileInput(fileName);
+        Program p;
+        p.entryPointLabel = "spill";
+
+        parse<
+        spill_test_grammar,
+        action>(fileInput, p);
+        
+        return p;
+    }
+
+
 
     Program parse_liveness(char *fileName){
         /*
