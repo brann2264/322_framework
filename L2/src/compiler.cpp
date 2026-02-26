@@ -121,8 +121,6 @@ int main(int argc, char **argv)
      * Parse the L2 program.
      */
     auto p = L2::parse_file(argv[optind]);
-  
-    std::cout << "parsing done" << std::endl;
 
     if (verbose)
       std::cout << std::endl << p.to_string();

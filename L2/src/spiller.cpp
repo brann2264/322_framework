@@ -8,7 +8,7 @@ namespace L2 {
     bool MemoryAccess::spill(std::string var_name, std::string spilled_name){
         Variable* x_var = dynamic_cast<Variable*>(x.get());
 
-        if (x_var != nullptr){
+        if (x_var != nullptr && x_var->var_name == var_name){
             std::unique_ptr<Variable> replacement_var = std::make_unique<Variable>(spilled_name);
             x = std::move(replacement_var);
             return true;
@@ -309,7 +309,6 @@ namespace L2 {
     }
 
     void Function::spill_var(std::string var_name, std::string spill_prefix){
-
         std::vector<std::unique_ptr<Instruction>> new_Instructions;
         bool hasSpilled = false;
 
@@ -317,7 +316,9 @@ namespace L2 {
 
             std::pair<bool, bool> isSpilled = instructions[i]->spill(var_name, spill_prefix + std::to_string(spill_count));
 
-            // std::cout << isSpilled.first << " , " << isSpilled.second << std::endl;
+            // std::pair<bool, bool> isSpilled = {instructions[i]->gen_set.find(var_name) != instructions[i]->gen_set.end(), 
+            //                                     instructions[i]->kill_set.find(var_name) != instructions[i]->kill_set.end()};
+
 
             if (isSpilled.first){
                 std::unique_ptr<Variable> w = std::make_unique<Variable>(spill_prefix + std::to_string(spill_count));

@@ -35,7 +35,12 @@ namespace L2 {
   }
 
   void Variable::generate_code(std::ofstream& stream, const Function& parent_function) const {
-    int color_id = parent_function.graph.at("%"+var_name).color;
+    int color_id = parent_function.graph.at(var_name).color;
+
+    if (color_id == -1) {
+        throw std::runtime_error("CRITICAL ERROR: Tried to generate code for uncolored variable: %" + var_name);
+    }
+
     std::string allocated_register = COLOR_TO_REG[color_id];
 
     stream << allocated_register;
@@ -504,81 +509,6 @@ namespace L2 {
     }
     stream << ")";
   }
-  void Function::determine_liveness(bool verbose) {
-
-    for (auto& instruction : instructions) {
-      instruction->set_gen_set();
-      instruction->set_kill_set();
-    }
-
-    // each instruction's in set is at least its gen set
-    for (auto& instruction : instructions){
-      instruction->in_set.insert(instruction->gen_set.begin(), instruction->gen_set.end());
-    }
-
-    bool hasChanged = true;
-
-    while (hasChanged) {
-      hasChanged = false;
-      for (int instruction_idx = instructions.size()-1; instruction_idx >= 0; instruction_idx--) {
-        auto& instruction = instructions[instruction_idx];
-        int in_set_size = instruction->in_set.size();
-        int out_set_size = instruction->out_set.size();
-
-        std::set<std::string> out_diff_kill_set;
-        out_diff_kill_set.insert(instruction->out_set.begin(), instruction->out_set.end());
-        for (std::string kill_member : instruction->kill_set){
-          out_diff_kill_set.erase(kill_member);
-        }
-        instruction->in_set.insert(out_diff_kill_set.begin(), out_diff_kill_set.end());
-
-        for (int successor_idx : instruction->get_successor(labels_index, instruction_idx)){
-          instruction->out_set.insert(instructions[successor_idx]->in_set.begin(), instructions[successor_idx]->in_set.end());
-        }
-
-        if (in_set_size != instruction->in_set.size() || out_set_size != instruction->out_set.size()) hasChanged = true;
-      }
-    }
-
-    if (verbose) {
-    std::cout << "(\n(in" << std::endl;
-    
-    for (auto& instruction :  instructions){
-      std::cout << "(";
-
-      bool first = true;
-      for (std::string in_member : instruction->in_set){
-
-        if (!first){
-          std::cout << " ";
-        }
-        std::cout << in_member;
-        first = false;
-      }
-      std::cout << ")" << std::endl;
-    }
-
-    std::cout << ")\n\n(out" << std::endl;
-    
-    for (auto& instruction :  instructions){
-      std::cout << "(";
-
-      bool first = true;
-      for (std::string out_member : instruction->out_set){
-
-        if (!first){
-          std::cout << " ";
-        }
-        std::cout << out_member;
-        first = false;
-      }
-      std::cout << ")" << std::endl;
-    }
-
-    std::cout << ")\n\n)" << std::endl;
-    }
-  }
-
 
   std::string Program::to_string() const {
     std::string str_rep = "(" + entryPointLabel + "\n";
@@ -598,14 +528,5 @@ namespace L2 {
     }
     stream << ")";
   }
-  void Program::determine_liveness(bool verbose)
-  {
-
-    for (auto &f : functions)
-    {
-      f->determine_liveness(verbose);
-    }
-  }
-
 }
 

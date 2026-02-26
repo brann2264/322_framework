@@ -1109,7 +1109,6 @@ namespace L2
             auto i = std::make_unique<Instruction_label>(name_ptr->name);
             
             p.functions.back()->instructions.push_back(std::move(i));
-            p.functions.back()->labels_index[name_ptr->name] = p.functions.back()->instructions.size()-1;
         }
     };
 

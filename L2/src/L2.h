@@ -187,6 +187,13 @@ namespace L2 {
         return {false, false};
       }
 
+      void reset(){
+        gen_set.clear();
+        kill_set.clear();
+        in_set.clear();
+        out_set.clear();
+      }
+
       std::set<std::string> gen_set;
       std::set<std::string> kill_set;
       std::set<std::string> in_set;
@@ -373,7 +380,6 @@ namespace L2 {
       void set_gen_set() override;
       void set_kill_set() override;
 
-    private:
       std::string label_name;
   };
 
