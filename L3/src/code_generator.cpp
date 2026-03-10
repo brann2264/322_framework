@@ -13,7 +13,7 @@ namespace L3
      * Open the output file.
      */
     std::ofstream outputFile;
-    outputFile.open("prog.L2");
+    outputFile.open("prog.S");
 
     /*
      * Generate target code
