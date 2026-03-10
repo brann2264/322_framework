@@ -1,0 +1,10 @@
+(@main
+(@main
+0
+mem rsp -8 <- :_global_1_ret
+rdi <- 1
+call print 1
+:_global_1_retrax <- 0
+return
+)
+)

@@ -13,7 +13,7 @@ namespace L3
      * Open the output file.
      */
     std::ofstream outputFile;
-    outputFile.open("prog.S");
+    outputFile.open("prog.L2");
 
     /*
      * Generate target code
@@ -250,7 +250,7 @@ namespace L3
   {
     stream << "cjump ";
     t->generate_code(stream, function_scope, global_scope);
-    stream << " = 1";
+    stream << " = 1 ";
     label->generate_code(stream, function_scope, global_scope);
   }
   void Goto_Label_Tile::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
