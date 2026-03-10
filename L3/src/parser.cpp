@@ -39,7 +39,7 @@ namespace L3
     /*
      * Tokens parsed
      */
-    std::vector<std::unique_ptr<Item>> parsed_items;
+    std::vector<std::shared_ptr<Item>> parsed_items;
 
     /*
      * Grammar rules from now on.
@@ -384,7 +384,7 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            parsed_items.push_back(std::make_unique<Name>(in.string()));
+            parsed_items.push_back(std::make_shared<Name>(in.string()));
         }
     };
 
@@ -394,11 +394,11 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            Name *name = dynamic_cast<Name *>(parsed_items.back().release());
+            std::shared_ptr<Name> name = std::dynamic_pointer_cast<Name>(parsed_items.back());
             if (name == nullptr)
                 throw std::runtime_error("Name not parsed (label)");
             parsed_items.pop_back();
-            parsed_items.push_back(std::make_unique<Label>(name->name));
+            parsed_items.push_back(std::make_shared<Label>(name->name));
         }
     };
 
@@ -408,11 +408,11 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            Name *name = dynamic_cast<Name *>(parsed_items.back().release());
+            std::shared_ptr<Name> name = std::dynamic_pointer_cast<Name>(parsed_items.back());
             if (name == nullptr)
                 throw std::runtime_error("Name not parsed (function_name)");
             parsed_items.pop_back();
-            parsed_items.push_back(std::make_unique<FunctionName>(name->name));
+            parsed_items.push_back(std::make_shared<FunctionName>(name->name));
         }
     };
 
@@ -422,7 +422,7 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            parsed_items.push_back(std::make_unique<Number>(std::stoll(in.string())));
+            parsed_items.push_back(std::make_shared<Number>(std::stoll(in.string())));
         }
     };
 
@@ -432,11 +432,11 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            Name *name = dynamic_cast<Name *>(parsed_items.back().release());
+            std::shared_ptr<Name> name = std::dynamic_pointer_cast<Name>(parsed_items.back());
             if (name == nullptr)
                 throw std::runtime_error("Name not parsed (var)");
             parsed_items.pop_back();
-            parsed_items.push_back(std::make_unique<Variable>(name->name));
+            parsed_items.push_back(std::make_shared<Variable>(name->name));
         }
     };
 
@@ -465,7 +465,7 @@ namespace L3
                 throw std::runtime_error("Unknown Operator: " + op_str);
             }
 
-            parsed_items.push_back(std::make_unique<Operator>(op_enum));
+            parsed_items.push_back(std::make_shared<Operator>(op_enum));
         }
     };
 
@@ -492,7 +492,7 @@ namespace L3
                 throw std::runtime_error("Unknown Comparator: " + cmp_str);
             }
 
-            parsed_items.push_back(std::make_unique<Comparator>(cmp));
+            parsed_items.push_back(std::make_shared<Comparator>(cmp));
         }
     };
 
@@ -507,23 +507,23 @@ namespace L3
             // based on our grammar, there can't be nested function definitions, so all parsed objects must either be a label or vars rn
             while (parsed_items.size() != 0)
             {
-
                 // should be function name
                 if (parsed_items.size() == 1)
                 {
-                    std::unique_ptr<FunctionName> function_name = std::unique_ptr<FunctionName>(dynamic_cast<FunctionName *>(parsed_items.back().release()));
+                    std::shared_ptr<FunctionName> function_name = std::dynamic_pointer_cast<FunctionName>(parsed_items.back());
+                    parsed_items.pop_back();
                     if (function_name == nullptr)
                         throw std::runtime_error("Function Name not parsed properly");
                     f->function_name = std::move(function_name);
                 }
                 else
                 {
-                    std::unique_ptr<Variable> var = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+                    std::shared_ptr<Variable> var = std::dynamic_pointer_cast<Variable>(parsed_items.back());
+                    parsed_items.pop_back();
                     if (var == nullptr)
                         throw std::runtime_error("Function Parameter Vars not parsed properly");
                     f->vars.push_back(std::move(var));
                 }
-                parsed_items.pop_back();
             }
 
             // reverse bc var order was reversed
@@ -539,9 +539,9 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<S> s = std::unique_ptr<S>(dynamic_cast<S *>(parsed_items.back().release()));
+            std::shared_ptr<S> s = std::dynamic_pointer_cast<S>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Variable> var = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
 
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Var_S_Assignment>(std::move(var), std::move(s)));
@@ -554,13 +554,13 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<T> t2 = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+            std::shared_ptr<T> t2 = std::dynamic_pointer_cast<T>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Operator> op = std::unique_ptr<Operator>(dynamic_cast<Operator *>(parsed_items.back().release()));
+            std::shared_ptr<Operator> op = std::dynamic_pointer_cast<Operator>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<T> t1 = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+            std::shared_ptr<T> t1 = std::dynamic_pointer_cast<T>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Variable> var = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
 
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Var_T_Op_T_Assignment>(std::move(var), std::move(t1), std::move(op), std::move(t2)));
@@ -573,13 +573,13 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<T> t2 = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+            std::shared_ptr<T> t2 = std::dynamic_pointer_cast<T>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Comparator> cmp = std::unique_ptr<Comparator>(dynamic_cast<Comparator *>(parsed_items.back().release()));
+            std::shared_ptr<Comparator> cmp = std::dynamic_pointer_cast<Comparator>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<T> t1 = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+            std::shared_ptr<T> t1 = std::dynamic_pointer_cast<T>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Variable> var = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
 
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Var_T_Cmp_T_Assignment>(std::move(var), std::move(t1), std::move(cmp), std::move(t2)));
@@ -592,9 +592,9 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<Variable> var2 = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var2 = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Variable> var1 = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var1 = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
 
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Var_Load_Var_Assignment>(std::move(var1), std::move(var2)));
@@ -607,9 +607,9 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<S> s = std::unique_ptr<S>(dynamic_cast<S *>(parsed_items.back().release()));
+            std::shared_ptr<S> s = std::dynamic_pointer_cast<S>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<Variable> var = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
 
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Store_Var_S_Assignment>(std::move(var), std::move(s)));
@@ -632,7 +632,7 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<T> t = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+            std::shared_ptr<T> t = std::dynamic_pointer_cast<T>(parsed_items.back());
             parsed_items.pop_back();
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Return_T>(std::move(t)));
         }
@@ -644,7 +644,7 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {   
-            std::unique_ptr<Label> label = std::unique_ptr<Label>(dynamic_cast<Label *>(parsed_items.back().release()));
+            std::shared_ptr<Label> label = std::dynamic_pointer_cast<Label>(parsed_items.back());
             parsed_items.pop_back();
 
             if (p.longest_label.empty() || label->label_name.length() > p.longest_label.length())
@@ -660,7 +660,7 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<Label> label = std::unique_ptr<Label>(dynamic_cast<Label *>(parsed_items.back().release()));
+            std::shared_ptr<Label> label = std::dynamic_pointer_cast<Label>(parsed_items.back());
             parsed_items.pop_back();
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Br_Label>(std::move(label)));
         }
@@ -672,9 +672,9 @@ namespace L3
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {
-            std::unique_ptr<Label> label = std::unique_ptr<Label>(dynamic_cast<Label *>(parsed_items.back().release()));
+            std::shared_ptr<Label> label = std::dynamic_pointer_cast<Label>(parsed_items.back());
             parsed_items.pop_back();
-            std::unique_ptr<T> t = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+            std::shared_ptr<T> t = std::dynamic_pointer_cast<T>(parsed_items.back());
             parsed_items.pop_back();
 
             p.functions.back()->instructions.push_back(std::make_unique<Instruction_Br_T_Label>(std::move(t), std::move(label)));
@@ -688,7 +688,7 @@ namespace L3
         static void apply(const Input &in, Program &p)
         {   
             std::string in_str = in.string();
-            std::unique_ptr<Callee> callee = std::make_unique<Callee>();
+            std::shared_ptr<Callee> callee = std::make_shared<Callee>();
             
             if (in_str == "print"){
                 callee->name = "print";
@@ -701,7 +701,7 @@ namespace L3
             } else if (in_str == "tensor-error"){
                 callee->name = "allocate";
             } else {
-                std::unique_ptr<U> u = std::unique_ptr<U>(dynamic_cast<U *>(parsed_items.back().release()));
+                std::shared_ptr<U> u = std::dynamic_pointer_cast<U>(parsed_items.back());
                 parsed_items.pop_back();
                 callee->name = "%";
                 callee->u = std::move(u);
@@ -720,17 +720,16 @@ namespace L3
 
             while (parsed_items.size() != 0)
             {
-                Callee* callee = dynamic_cast<Callee *>(parsed_items.back().get());
+                std::shared_ptr<Callee> callee = std::dynamic_pointer_cast<Callee>(parsed_items.back());
 
                 // callee reached
                 if (callee != nullptr){
-                    std::unique_ptr<Callee> callee_ptr = std::unique_ptr<Callee>(dynamic_cast<Callee *>(parsed_items.back().release()));
-                    function_call->callee = std::move(callee_ptr);
+                    function_call->callee = std::move(callee);
                     parsed_items.pop_back();
                     break;
                 }
 
-                std::unique_ptr<T> arg = std::unique_ptr<T>(dynamic_cast<T *>(parsed_items.back().release()));
+                std::shared_ptr<T> arg = std::dynamic_pointer_cast<T>(parsed_items.back());
                 function_call->args.push_back(std::move(arg));
                 parsed_items.pop_back();
             }
@@ -750,7 +749,7 @@ namespace L3
         {
             std::unique_ptr<Instruction_Call_Function> function_call = std::unique_ptr<Instruction_Call_Function>(dynamic_cast<Instruction_Call_Function *>(p.functions.back()->instructions.back().release()));
             p.functions.back()->instructions.pop_back();
-            std::unique_ptr<Variable> var = std::unique_ptr<Variable>(dynamic_cast<Variable *>(parsed_items.back().release()));
+            std::shared_ptr<Variable> var = std::dynamic_pointer_cast<Variable>(parsed_items.back());
             parsed_items.pop_back();
 
             if (function_call == nullptr) throw std::runtime_error("Function Call cast");
