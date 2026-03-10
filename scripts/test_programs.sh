@@ -45,7 +45,7 @@ for i in *.${extFile} ; do
     let failed=$failed+1 ;
     echo "${red}[FAILED]${reset}";
     testsFailed="${i} ${testsFailed}";
-    rm ${i} ${i}.out ;
+    # rm ${i} ${i}.out ;
   fi
   popd &> /dev/null ; 
 done
