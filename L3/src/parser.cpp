@@ -69,10 +69,10 @@ namespace L3
 
     struct cmp : pegtl::sor<
                      TAO_PEGTL_STRING("<="),
+                     TAO_PEGTL_STRING(">="),
                      TAO_PEGTL_STRING("<"),
                      TAO_PEGTL_STRING(">"),
-                     TAO_PEGTL_STRING("="),
-                     TAO_PEGTL_STRING(">=")>
+                     TAO_PEGTL_STRING("=")>
     {
     };
 
@@ -347,10 +347,12 @@ namespace L3
 
     struct Function_rule : pegtl::seq<
                                Function_def_rule,
+                               seps_with_comments,
                                pegtl::must<pegtl::one<'{'>>,
                                seps_with_comments,
                                pegtl::must<Instructions_rule>,
                                seps_with_comments,
+                               spaces,
                                pegtl::must<pegtl::one<'}'>>>
     {
     };

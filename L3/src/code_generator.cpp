@@ -132,7 +132,9 @@ namespace L3
 
     stream << "call ";
     callee->generate_code(stream, function_scope, global_scope);
+    stream << " ";
     stream << std::to_string(args.size());
+    stream << "\n";
 
     stream << ":" + return_label;
   }
