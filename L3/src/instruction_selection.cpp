@@ -649,9 +649,9 @@ namespace L3 {
     }
     W_Assign_T_Cmp_T_Tile::W_Assign_T_Cmp_T_Tile(InstructionTree& tree){
         w = tree.item;
-        t1 = tree.children[0]->children[1]->item;
+        t1 = tree.children[0]->children[0]->item;
         cmp = tree.children[0]->item;
-        t2 = tree.children[0]->children[0]->item;
+        t2 = tree.children[0]->children[1]->item;
     }
     Cjump_T_Label_Tile::Cjump_T_Label_Tile(InstructionTree& tree){
         t = tree.children[0]->item;

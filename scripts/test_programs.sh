@@ -30,7 +30,11 @@ for i in *.${extFile} ; do
   didSucceed=0 ;
   ./${compiler} tests/${i} ;
   if test $? -eq 0 ; then
-    valgrind ./a.out &> OUT ;
+    if test -f tests/${i}.in ; then
+      valgrind ./a.out < tests/${i}.in &> OUT ;
+    else
+      valgrind ./a.out &> OUT ;
+    fi
     numberOfErrors=`grep "???" OUT | wc -l | awk '{print $1}'` ;
     if test "$numberOfErrors" == "0" ; then
       didSucceed=1 ;

@@ -1,0 +1,16 @@
+(@main
+(@main
+	0 0
+	rdx <- 1
+	rax <- 2
+	rax <- rdx < rax
+	cjump rax = 1 :false_global_1
+	goto :false_global_2
+	:false_global_1
+	rax <- 0
+	return
+	:false_global_2
+	rax <- rax
+	return
+)
+)

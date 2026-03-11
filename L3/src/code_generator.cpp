@@ -43,7 +43,7 @@ namespace L3
 
   void Label::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
   {
-    stream << ":" + global_scope.label_to_global(label_name);
+    stream << ":" + global_scope.label_to_global(label_name, function_scope);
   }
 
   void FunctionName::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
@@ -98,17 +98,21 @@ namespace L3
 
   //
 
-  void Instruction_Return::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
-  {
-    stream << "return";
+  void Instruction_Label::generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const {
+    label->generate_code(stream, function_scope, global_scope);
   }
 
-  void Instruction_Return_T::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
-  {
-    stream << "rax <- ";
-    t->generate_code(stream, function_scope, global_scope);
-    stream << "\nreturn";
-  }
+  // void Instruction_Return::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
+  // {
+  //   stream << "return";
+  // }
+
+  // void Instruction_Return_T::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
+  // {
+  //   stream << "rax <- ";
+  //   t->generate_code(stream, function_scope, global_scope);
+  //   stream << "\nreturn";
+  // }
 
   void Instruction_Call_Function::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
   {
@@ -124,7 +128,9 @@ namespace L3
         stream << "\n";
       } else {
         // -8 used by return label, so start at -16
-        stream << "mem rsp -" << (i-6)*8 + 16 << " <- ";
+        int offset = (args.size() - i) * 8 + 8; 
+      
+        stream << "mem rsp -" << offset << " <- ";
         args[i]->generate_code(stream, function_scope, global_scope);
         stream << "\n";
       }
@@ -233,7 +239,7 @@ namespace L3
       return;
     case EComparator::GTE:
       t2->generate_code(stream, function_scope, global_scope);
-      stream << " < ";
+      stream << " <= ";
       t1->generate_code(stream, function_scope, global_scope);
       return;
     default:
@@ -287,21 +293,54 @@ namespace L3
     stream << " ";
     E->generate_code(stream, function_scope, global_scope);
   }
+
   void W_Assign_T_Aop_T_Tile::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
   {
-    // w <- t1
-    w->generate_code(stream, function_scope, global_scope);
-    stream << " <- ";
-    t1->generate_code(stream, function_scope, global_scope);
-    stream << "\n";
+    std::string w_str = w->to_string();
+    std::string t1_str = t1->to_string();
+    std::string t2_str = t2->to_string();
+    std::string op_str = aop->to_string();
 
-    // w += t2
+    // can simplify to +=
+    if (w_str == t2_str && w_str != t1_str) {
+        if (op_str == "+" || op_str == "*" || op_str == "&") {
+            w->generate_code(stream, function_scope, global_scope);
+            stream << " ";
+            aop->generate_code(stream, function_scope, global_scope);
+            stream << "= ";
+            t1->generate_code(stream, function_scope, global_scope);
+            return;
+        } else {
+            // not communitive -> temp var
+            std::string tmp = "%___temp___";
+            
+            stream << tmp << " <- ";
+            t1->generate_code(stream, function_scope, global_scope);
+            stream << "\n";
+            
+            stream << tmp << " ";
+            aop->generate_code(stream, function_scope, global_scope);
+            stream << "= ";
+            w->generate_code(stream, function_scope, global_scope);
+            stream << "\n";
+            
+            w->generate_code(stream, function_scope, global_scope);
+            stream << " <- " << tmp;
+            return;
+        }
+    }
+
+        w->generate_code(stream, function_scope, global_scope);
+        stream << " <- ";
+        t1->generate_code(stream, function_scope, global_scope);
+        stream << "\n";
+
     w->generate_code(stream, function_scope, global_scope);
     stream << " ";
     aop->generate_code(stream, function_scope, global_scope);
     stream << "= ";
     t2->generate_code(stream, function_scope, global_scope);
-  }
+}
 
   void W_Assign_T_Sop_T_Tile::generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const
   {
@@ -323,16 +362,15 @@ namespace L3
     return longest_label + "_global_" + std::to_string(label_count);
   }
 
-  std::string Program::label_to_global(std::string label_name)
-  {
-
-    if (local_to_global_label_map.find(label_name) != local_to_global_label_map.end())
-      return local_to_global_label_map.at(label_name);
+  std::string Program::label_to_global(std::string label_name, Function& function)
+  { 
+    if (function.local_to_global_label_map.find(label_name) != function.local_to_global_label_map.end())
+      return function.local_to_global_label_map.at(label_name);
 
     label_count += 1;
     std::string new_global_label_name = longest_label + "_global_" + std::to_string(label_count);
 
-    local_to_global_label_map[label_name] = new_global_label_name;
+    function.local_to_global_label_map[label_name] = new_global_label_name;
     return new_global_label_name;
   }
 
@@ -371,6 +409,7 @@ namespace L3
       {
         // labels or function calls in between contexts
         instructions[i]->generate_code(stream, *this, global_scope);
+        stream << "\n";
         i++;
       }
 

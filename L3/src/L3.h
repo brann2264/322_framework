@@ -139,7 +139,9 @@ namespace L3 {
       virtual std::unique_ptr<InstructionTree> generate_tree() const {
         throw std::runtime_error("UNREACHABLE");
       }
-      virtual void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const {return;};
+      virtual void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const {
+        throw std::runtime_error("UNREACHABLE");
+      };
   };
 
   /*
@@ -209,7 +211,7 @@ namespace L3 {
   class Instruction_Return : public Instruction{
     public:
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const override;
+      // void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const override;
       std::unique_ptr<InstructionTree> generate_tree() const override;
   };
 
@@ -220,7 +222,7 @@ namespace L3 {
       Instruction_Return_T(std::shared_ptr<T> _t) : t(std::move(_t)){}
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const override;
+      // void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const override;
       std::unique_ptr<InstructionTree> generate_tree() const override;
   };
 
@@ -231,6 +233,7 @@ namespace L3 {
       Instruction_Label(std::shared_ptr<Label> _label) : label(std::move(_label)){}
 
       std::string to_string() const override;
+      void generate_code(std::ofstream& stream, Function& function_scope, Program& global_scope) const override;
   };
 
   class Instruction_Br_Label: public Instruction{
@@ -285,6 +288,7 @@ namespace L3 {
       std::vector<std::shared_ptr<Variable>> vars;
       std::vector<std::unique_ptr<Instruction>> instructions;
       std::vector<std::unique_ptr<Context>> contexts;
+      std::unordered_map<std::string, std::string> local_to_global_label_map;
 
       std::string to_string() const;
       void create_contexts();
@@ -296,10 +300,9 @@ namespace L3 {
       std::vector<std::unique_ptr<Function>> functions;
       std::string longest_label;
       int label_count = 0;
-      std::unordered_map<std::string, std::string> local_to_global_label_map;
 
       std::string to_string() const;
-      std::string label_to_global(std::string label_name);
+      std::string label_to_global(std::string label_name, Function& function);
       std::string generate_global_label();
       void generate_code(std::ofstream& stream);
   };

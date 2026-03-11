@@ -697,11 +697,11 @@ namespace L3
             } else if (in_str == "allocate"){
                 callee->name = "allocate";
             } else if (in_str == "input"){
-                callee->name = "allocate";
+                callee->name = "input";
             } else if (in_str == "tuple-error"){
-                callee->name = "allocate";
+                callee->name = "tuple-error";
             } else if (in_str == "tensor-error"){
-                callee->name = "allocate";
+                callee->name = "tensor-error";
             } else {
                 std::shared_ptr<U> u = std::dynamic_pointer_cast<U>(parsed_items.back());
                 parsed_items.pop_back();
