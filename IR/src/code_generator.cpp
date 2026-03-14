@@ -111,16 +111,17 @@ namespace IR
     // dont emit
   }
 
-  void Instruction_Var_Def::generate_code(std::ofstream& stream) const {
-    type_def->generate_code(stream);
+  void Instruction_Var_Def::generate_code(std::ofstream& stream, Function& function_scope) const {
+   // dont emit
+    function_scope.var_types[type_def->var->to_string()] = type_def->type->var_type;
   }
 
-  void Instruction_Var_S_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_S_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     var->generate_code(stream);
     stream << " <- ";
     s->generate_code(stream);
   }
-  void Instruction_Var_T_Op_T_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_T_Op_T_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     var->generate_code(stream);
     stream << " <- ";
     t1->generate_code(stream);
@@ -129,7 +130,28 @@ namespace IR
     stream << " ";
     t2->generate_code(stream);
   }
-  void Instruction_Var_Array_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_Array_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
+
+    if (function_scope.var_types[arr_var->to_string()] == EType::TUPLE){
+
+      if (idxs.size() != 1) throw std::runtime_error("Tuple cant be multi-dimensional");
+
+      std::string address = temp_var();
+      stream << address << " <- 8 * ";
+      idxs[0]->generate_code(stream);
+      stream << "\n";
+
+      stream << address << " <- " << address << " + 8\n"; 
+
+      stream << address << " <- " << address << " + ";
+      arr_var->generate_code(stream);
+      stream << "\n";
+
+      var->generate_code(stream);
+      stream << " <- load " << address;
+      return;
+    }
+
     std::string base = temp_var();
     stream << base << " <- " << 8*(idxs.size() + 1) << "\n";
 
@@ -151,9 +173,9 @@ namespace IR
       stream << bodyOffset << " <- " << bodyOffset << " + " << dim_offset << "\n";
 
       std::string header_offset = temp_var();
-      stream << header_offset << " <- " << 8*(i+1) << "\n";
+      // stream << header_offset << " <- " << 8*(i+1) << "\n";
       
-      stream << header_offset << " <- " << header_offset << " + ";
+      stream << header_offset << " <- " << 8*(i+1) << " + ";
       arr_var->generate_code(stream);
       stream << "\n";
 
@@ -162,6 +184,8 @@ namespace IR
       stream << dim_size << " <- " << dim_size << " >> 1\n";
       stream << multiplier << " <- " << multiplier << " * " << dim_size << "\n";
     }
+
+    stream << bodyOffset << " <- " << bodyOffset << " * 8\n";
 
     std::string total_offset = temp_var();
     stream << total_offset << " <- " << bodyOffset << " + " << base << "\n";
@@ -174,7 +198,28 @@ namespace IR
     var->generate_code(stream);
     stream << " <- load " << address << "\n";
   }
-  void Instruction_Array_S_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Array_S_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
+    
+    if (function_scope.var_types[arr_var->to_string()] == EType::TUPLE){
+
+      if (idxs.size() != 1) throw std::runtime_error("Tuple cant be multi-dimensional");
+
+      std::string address = temp_var();
+      stream << address << " <- 8 * ";
+      idxs[0]->generate_code(stream);
+      stream << "\n";
+
+      stream << address << " <- " << address << " + 8\n"; 
+
+      stream << address << " <- " << address << " + ";
+      arr_var->generate_code(stream);
+      stream << "\n";
+
+      stream << "store " << address << " <- ";
+      s->generate_code(stream);
+      return;
+    }
+    
     std::string base = temp_var();
     stream << base << " <- " << 8*(idxs.size() + 1) << "\n";
 
@@ -196,9 +241,9 @@ namespace IR
       stream << bodyOffset << " <- " << bodyOffset << " + " << dim_offset << "\n";
 
       std::string header_offset = temp_var();
-      stream << header_offset << " <- " << 8*(i+1) << "\n";
+      // stream << header_offset << " <- " << 8*(i+1) << "\n";
       
-      stream << header_offset << " <- " << header_offset << " + ";
+      stream << header_offset << " <- " << 8*(i+1) << " + ";
       arr_var->generate_code(stream);
       stream << "\n";
 
@@ -207,6 +252,8 @@ namespace IR
       stream << dim_size << " <- " << dim_size << " >> 1\n";
       stream << multiplier << " <- " << multiplier << " * " << dim_size << "\n";
     }
+
+    stream << bodyOffset << " <- " << bodyOffset << " * 8\n";
 
     std::string total_offset = temp_var();
     stream << total_offset << " <- " << bodyOffset << " + " << base << "\n";
@@ -220,7 +267,7 @@ namespace IR
     s->generate_code(stream);
     stream << "\n";
   }
-  void Instruction_Var_Length_Var_T_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_Length_Var_T_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     std::string offset = temp_var();
     stream << offset << " <- 8\n";
     stream << offset << " <- " << offset << " + ";
@@ -235,12 +282,12 @@ namespace IR
     var1->generate_code(stream);
     stream << " <- load " << address;
   }
-  void Instruction_Var_Length_Var_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_Length_Var_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     var1->generate_code(stream);
     stream << " <- load";
     var2->generate_code(stream);
   }
-  void Instruction_Var_Array_Init::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_Array_Init::generate_code(std::ofstream& stream, Function& function_scope) const {
     // shift args by one
 
     std::string allocate_arg = temp_var();
@@ -292,16 +339,16 @@ namespace IR
       stream << "\n";
     }
   }
-  void Instruction_Var_Tuple_Init::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_Tuple_Init::generate_code(std::ofstream& stream, Function& function_scope) const {
     var->generate_code(stream);
     stream << " <- call allocate(";
     t->generate_code(stream);
     stream << ", 1)";
   }
-  void Instruction_Call_Function::generate_code(std::ofstream& stream) const {
+  void Instruction_Call_Function::generate_code(std::ofstream& stream, Function& function_scope) const {
     stream << "call ";
     callee->generate_code(stream);
-    stream << " (";
+    stream << "(";
 
     for (int i = 0; i < args.size(); i++){
       args[i]->generate_code(stream);
@@ -311,27 +358,27 @@ namespace IR
     }
     stream << ")";
   }
-  void Instruction_Var_Function_Assignment::generate_code(std::ofstream& stream) const {
+  void Instruction_Var_Function_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     var->generate_code(stream);
     stream << " <- ";
-    function_call_instruction->generate_code(stream);
+    function_call_instruction->generate_code(stream, function_scope);
   }
 
-  void Instruction_Return::generate_code(std::ofstream &stream) const
+  void Instruction_Return::generate_code(std::ofstream& stream, Function& function_scope) const
   {
     stream << "return";
   }
-  void Instruction_Return_T::generate_code(std::ofstream &stream) const
+  void Instruction_Return_T::generate_code(std::ofstream& stream, Function& function_scope) const
   {
     stream << "return ";
     t->generate_code(stream);
   }
-  void Instruction_Br_Label::generate_code(std::ofstream &stream) const
+  void Instruction_Br_Label::generate_code(std::ofstream& stream, Function& function_scope) const
   {
     stream << "br ";
     label->generate_code(stream);
   }
-  void Instruction_Br_T_Label_Label::generate_code(std::ofstream &stream) const
+  void Instruction_Br_T_Label_Label::generate_code(std::ofstream& stream, Function& function_scope) const
   {
     stream << "br ";
     t->generate_code(stream);
@@ -343,11 +390,9 @@ namespace IR
     label2->generate_code(stream);
   }
 
-  void Function::generate_code(std::ofstream &stream) const
+  void Function::generate_code(std::ofstream &stream)
   {
     stream << "define ";
-    return_type->generate_code(stream);
-    stream << " ";
     function_name->generate_code(stream);
     stream << " (";
 
@@ -367,7 +412,7 @@ namespace IR
       }
       
       for (auto& instruction : block->instructions){
-        instruction->generate_code(stream);
+        instruction->generate_code(stream, *this);
         stream << "\n";
       }
 
@@ -377,14 +422,14 @@ namespace IR
       if (br_label != nullptr){
         // generate br if label1 is not next
         if (block->successors.find(br_label->label->label_name) != block->successors.end()){
-          br_label->generate_code(stream);
+          br_label->generate_code(stream, *this);
           stream << "\n";
         }
           
       } else if (br_t_label_label != nullptr){
 
         if (block->successors.size() == 2){
-          br_t_label_label->generate_code(stream);
+          br_t_label_label->generate_code(stream, *this);
           stream << "\n";
         } else if (block->successors.size() == 1){
           // successor only gets deleted if it is label2
@@ -396,7 +441,7 @@ namespace IR
         }
       } else {
         // return instruction
-        block->end_instruction->generate_code(stream);
+        block->end_instruction->generate_code(stream, *this);
         stream << "\n";
       }
     }

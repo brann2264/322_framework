@@ -145,7 +145,7 @@ namespace IR {
     public:
       virtual ~Instruction() = default;
       virtual std::string to_string() const = 0;
-      virtual void generate_code(std::ofstream& stream) const {
+      virtual void generate_code(std::ofstream& stream, Function& function_scope) const {
         throw std::runtime_error("UNREACHABLE");
       };
   };
@@ -160,7 +160,7 @@ namespace IR {
 
       Instruction_Var_Def(std::shared_ptr<TypeDef> _type_def) : type_def(std::move(_type_def)){}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_S_Assignment: public Instruction{
@@ -171,7 +171,7 @@ namespace IR {
       Instruction_Var_S_Assignment(std::shared_ptr<Variable> _var, std::shared_ptr<S> _s) : var(std::move(_var)), s(std::move(_s)){}
       
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_T_Op_T_Assignment: public Instruction {
@@ -185,7 +185,7 @@ namespace IR {
         std::shared_ptr<Operator> _op, std::shared_ptr<T> _t2) : var(std::move(_var)), t1(std::move(_t1)), 
                                                                 op(std::move(_op)), t2(std::move(_t2)){}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
       
   };
 
@@ -196,7 +196,7 @@ namespace IR {
       std::vector<std::shared_ptr<T>> idxs;
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Array_S_Assignment: public Instruction{
@@ -206,7 +206,7 @@ namespace IR {
       std::vector<std::shared_ptr<T>> idxs;
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_Length_Var_T_Assignment: public Instruction{
@@ -219,7 +219,7 @@ namespace IR {
       : var1(std::move(_var1)), var2(std::move(_var2)), t(std::move(_t)){}
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_Length_Var_Assignment: public Instruction{
@@ -231,7 +231,7 @@ namespace IR {
       : var1(std::move(_var1)), var2(std::move(_var2)){}
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_Array_Init: public Instruction{
@@ -240,7 +240,7 @@ namespace IR {
       std::vector<std::shared_ptr<T>> dims;
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_Tuple_Init: public Instruction{
@@ -250,7 +250,7 @@ namespace IR {
 
       Instruction_Var_Tuple_Init(std::shared_ptr<Variable> _var, std::shared_ptr<T> _t) : var(std::move(_var)), t(std::move(_t)) {}
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Call_Function: public Instruction{
@@ -259,7 +259,7 @@ namespace IR {
       std::vector<std::shared_ptr<T>> args;
     
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Var_Function_Assignment: public Instruction{
@@ -271,7 +271,7 @@ namespace IR {
         function_call_instruction(std::move(_function_call_instruction)) {}
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   /*
@@ -281,7 +281,7 @@ namespace IR {
   class Instruction_Return : public Instruction{
     public:
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Return_T: public Instruction{
@@ -291,7 +291,7 @@ namespace IR {
       Instruction_Return_T(std::shared_ptr<T> _t) : t(std::move(_t)){}
 
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Br_Label: public Instruction{
@@ -301,7 +301,7 @@ namespace IR {
       Instruction_Br_Label(std::shared_ptr<Label> _label) : label(std::move(_label)){}
     
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   class Instruction_Br_T_Label_Label: public Instruction{
@@ -314,7 +314,7 @@ namespace IR {
         : label1(std::move(_label1)), label2(std::move(_label2)), t(std::move(_t)){}
     
       std::string to_string() const override;
-      void generate_code(std::ofstream& stream) const override;
+      void generate_code(std::ofstream& stream, Function& function_scope) const override;
   };
 
   /*
@@ -340,10 +340,11 @@ namespace IR {
       std::shared_ptr<Type> return_type;
       std::vector<std::shared_ptr<TypeDef>> params;
       std::vector<std::unique_ptr<Block>> blocks;
+      std::unordered_map<std::string, EType> var_types;
 
       std::string to_string() const;
       void linearize();
-      void generate_code(std::ofstream& stream) const;
+      void generate_code(std::ofstream& stream);
   };
 
   class Program{
@@ -351,11 +352,12 @@ namespace IR {
       std::vector<std::unique_ptr<Function>> functions;
 
       std::string to_string() const;
-      
+
       void generate_code(std::ofstream& stream) {
         for (auto& f: functions){
           f->linearize();
           f->generate_code(stream);
+          stream << "\n";
         }
       }
   };
