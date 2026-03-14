@@ -1,29 +1,934 @@
 define @main () {
 
 
-%t <- call @createTuple(3)
+
+
+
+%newVar0m3 <- 0
+
+%newVar0m2 <- 0
+
+%newVar0m1 <- 0
+
+%newVar0dim <- 601
+%ASDASDSAD1 <- %newVar0dim >> 1
+%ASDASDSAD2 <- %newVar0dim >> 1
+%ASDASDSAD0 <- %ASDASDSAD1 * %ASDASDSAD2
+%ASDASDSAD0 <- %ASDASDSAD0 + 2
+%ASDASDSAD0 <- %ASDASDSAD0 << 1
+%ASDASDSAD0 <- %ASDASDSAD0 + 1
+%newVar0m1 <- call allocate(%ASDASDSAD0, 1)
+%ASDASDSAD3 <- %newVar0m1 + 8
+store %ASDASDSAD3 <- %newVar0dim
+%ASDASDSAD4 <- %newVar0m1 + 16
+store %ASDASDSAD4 <- %newVar0dim
+
+%ASDASDSAD6 <- %newVar0dim >> 1
+%ASDASDSAD7 <- %newVar0dim >> 1
+%ASDASDSAD5 <- %ASDASDSAD6 * %ASDASDSAD7
+%ASDASDSAD5 <- %ASDASDSAD5 + 2
+%ASDASDSAD5 <- %ASDASDSAD5 << 1
+%ASDASDSAD5 <- %ASDASDSAD5 + 1
+%newVar0m2 <- call allocate(%ASDASDSAD5, 1)
+%ASDASDSAD8 <- %newVar0m2 + 8
+store %ASDASDSAD8 <- %newVar0dim
+%ASDASDSAD9 <- %newVar0m2 + 16
+store %ASDASDSAD9 <- %newVar0dim
+
+%ASDASDSAD11 <- %newVar0dim >> 1
+%ASDASDSAD12 <- %newVar0dim >> 1
+%ASDASDSAD10 <- %ASDASDSAD11 * %ASDASDSAD12
+%ASDASDSAD10 <- %ASDASDSAD10 + 2
+%ASDASDSAD10 <- %ASDASDSAD10 << 1
+%ASDASDSAD10 <- %ASDASDSAD10 + 1
+%newVar0m3 <- call allocate(%ASDASDSAD10, 1)
+%ASDASDSAD13 <- %newVar0m3 + 8
+store %ASDASDSAD13 <- %newVar0dim
+%ASDASDSAD14 <- %newVar0m3 + 16
+store %ASDASDSAD14 <- %newVar0dim
+
+
+
+
+
+%newVar1max1 <- 9
+%newVar1max2 <- 9
+%newVar1index1 <- 1
+:new_label0
+%newVar_ciao__ciao_0 <- %newVar1index1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar1max1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_0 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_0 <- %newVar_ciao_0 << 1
+%newVar_ciao_0 <- %newVar_ciao_0 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_0
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body1
+return
+:body1
+%newVar1index2 <- 1
+:new_label1
+%newVar_ciao__ciao_0 <- %newVar1index2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar1max2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_1 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_1 <- %newVar_ciao_1 << 1
+%newVar_ciao_1 <- %newVar_ciao_1 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body2
+%newVar_ciao__ciao_0 <- %newVar1index1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1index1 <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1index1 <- %newVar1index1 << 1
+%newVar1index1 <- %newVar1index1 + 1
+br :new_label0
+:body2
+call @computeAndPrint(%newVar0m1, %newVar0m2, %newVar0m3, %newVar1index1, %newVar1index2)
+%newVar_ciao__ciao_0 <- %newVar1index2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1index2 <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1index2 <- %newVar1index2 << 1
+%newVar1index2 <- %newVar1index2 + 1
+br :new_label1
+}
+define @computeAndPrint (%m1, %m2, %m3, %v1, %v2) {
+
+
+call @initMatrix(%m1, %v1)
+call @initMatrix(%m2, %v2)
+call @matrixMultiplication(%m1, %m2, %m3)
+
+%newVar0t <- call @totalSum(%m1)
+call print(%newVar0t)
+%newVar0t <- call @totalSum(%m2)
+call print(%newVar0t)
+%newVar0t <- call @totalSum(%m3)
+call print(%newVar0t)
 return
 }
-define @createTuple () {
+define @initMatrix (%m, %initValue) {
 
 
-%x2 <- 21
-%p <- call allocate(5, 1)
-%ASDASDSAD0 <- 8 * 0
-%ASDASDSAD0 <- %ASDASDSAD0 + 8
-%ASDASDSAD0 <- %ASDASDSAD0 + %p
-store %ASDASDSAD0 <- 0
-%ASDASDSAD1 <- 8 * 1
-%ASDASDSAD1 <- %ASDASDSAD1 + 8
-%ASDASDSAD1 <- %ASDASDSAD1 + %p
-store %ASDASDSAD1 <- 1
-%ASDASDSAD2 <- 8 * 2
-%ASDASDSAD2 <- %ASDASDSAD2 + 8
-%ASDASDSAD2 <- %ASDASDSAD2 + %p
-store %ASDASDSAD2 <- %p1
-%ASDASDSAD3 <- 8 * 3
-%ASDASDSAD3 <- %ASDASDSAD3 + 8
-%ASDASDSAD3 <- %ASDASDSAD3 + %p
-store %ASDASDSAD3 <- %x2
-return %p
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%ASDASDSAD15 <- 8 * 0
+%ASDASDSAD15 <- 8 + %ASDASDSAD15
+%ASDASDSAD16 <- %m + %ASDASDSAD15
+%newVar0l1 <- load %ASDASDSAD16
+%ASDASDSAD17 <- 8 * 1
+%ASDASDSAD17 <- 8 + %ASDASDSAD17
+%ASDASDSAD18 <- %m + %ASDASDSAD17
+%newVar0l2 <- load %ASDASDSAD18
+%newVar0index1 <- 1
+:new_label0
+%newVar_ciao__ciao_0 <- %newVar0index1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0l1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_0 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_0 <- %newVar_ciao_0 << 1
+%newVar_ciao_0 <- %newVar_ciao_0 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_0
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :outerBody
+return
+:outerBody
+%newVar1index2 <- 1
+:new_label1
+%newVar_ciao__ciao_0 <- %newVar1index2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_1 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_1 <- %newVar_ciao_1 << 1
+%newVar_ciao_1 <- %newVar_ciao_1 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :innerBody
+%newVar_ciao__ciao_0 <- %newVar0index1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar0index1 <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar0index1 <- %newVar0index1 << 1
+%newVar0index1 <- %newVar0index1 + 1
+br :new_label0
+:innerBody
+%newVar_ciao__ciao_0 <- %initValue
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0index1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar2valueToStore <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar2valueToStore <- %newVar2valueToStore << 1
+%newVar2valueToStore <- %newVar2valueToStore + 1
+%newVar_ciao__ciao_0 <- %newVar2valueToStore
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar1index2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar2valueToStore <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar2valueToStore <- %newVar2valueToStore << 1
+%newVar2valueToStore <- %newVar2valueToStore + 1
+%newVar_ciao__ciao_2 <- %newVar0index1
+%newVar_ciao__ciao_2 <- %newVar_ciao__ciao_2 >> 1
+%newVar_ciao__ciao_3 <- %newVar1index2
+%newVar_ciao__ciao_3 <- %newVar_ciao__ciao_3 >> 1
+%newVar_ciao__ciao_4 <- 0
+%newVar_ciao__ciao_5 <- %m = 0
+br %newVar_ciao__ciao_5 :new_label_ciao_0
+%ASDASDSAD19 <- 8 * 0
+%ASDASDSAD19 <- 8 + %ASDASDSAD19
+%ASDASDSAD20 <- %m + %ASDASDSAD19
+%newVar_ciao__ciao_6 <- load %ASDASDSAD20
+%newVar_ciao__ciao_6 <- %newVar_ciao__ciao_6 >> 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_2
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 << 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 + 1
+%newVar_ciao__ciao_7 <- %newVar_ciao__ciao_2 < %newVar_ciao__ciao_6
+br %newVar_ciao__ciao_7 :new_label_ciao_2
+:new_label_ciao_0
+call tensor-error(0)
+:new_label_ciao_4
+%ASDASDSAD21 <- 24
+%ASDASDSAD22 <- 1
+%ASDASDSAD23 <- 0
+%ASDASDSAD24 <- %ASDASDSAD22 * %newVar_ciao__ciao_3
+%ASDASDSAD23 <- %ASDASDSAD23 + %ASDASDSAD24
+%ASDASDSAD25 <- 16 + %m
+%ASDASDSAD26 <- load %ASDASDSAD25
+%ASDASDSAD26 <- %ASDASDSAD26 >> 1
+%ASDASDSAD22 <- %ASDASDSAD22 * %ASDASDSAD26
+%ASDASDSAD27 <- %ASDASDSAD22 * %newVar_ciao__ciao_2
+%ASDASDSAD23 <- %ASDASDSAD23 + %ASDASDSAD27
+%ASDASDSAD28 <- 8 + %m
+%ASDASDSAD29 <- load %ASDASDSAD28
+%ASDASDSAD29 <- %ASDASDSAD29 >> 1
+%ASDASDSAD22 <- %ASDASDSAD22 * %ASDASDSAD29
+%ASDASDSAD23 <- %ASDASDSAD23 * 8
+%ASDASDSAD30 <- %ASDASDSAD23 + %ASDASDSAD21
+%ASDASDSAD31 <- %ASDASDSAD30 + %m
+store %ASDASDSAD31 <- %newVar2valueToStore
+
+%newVar_ciao__ciao_0 <- %newVar1index2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1index2 <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1index2 <- %newVar1index2 << 1
+%newVar1index2 <- %newVar1index2 + 1
+br :new_label1
+:new_label_ciao_2
+%ASDASDSAD32 <- 8 * 1
+%ASDASDSAD32 <- 8 + %ASDASDSAD32
+%ASDASDSAD33 <- %m + %ASDASDSAD32
+%newVar_ciao__ciao_8 <- load %ASDASDSAD33
+%newVar_ciao__ciao_8 <- %newVar_ciao__ciao_8 >> 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_3
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 << 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 + 1
+%newVar_ciao__ciao_9 <- %newVar_ciao__ciao_3 < %newVar_ciao__ciao_8
+br %newVar_ciao__ciao_9 :new_label_ciao_3
+br :new_label_ciao_0
+:new_label_ciao_3
+br :new_label_ciao_4
+}
+define @matrixMultiplication (%m1, %m2, %m3) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%ASDASDSAD34 <- 8 * 0
+%ASDASDSAD34 <- 8 + %ASDASDSAD34
+%ASDASDSAD35 <- %m1 + %ASDASDSAD34
+%newVar0m1_l1 <- load %ASDASDSAD35
+%ASDASDSAD36 <- 8 * 1
+%ASDASDSAD36 <- 8 + %ASDASDSAD36
+%ASDASDSAD37 <- %m1 + %ASDASDSAD36
+%newVar0m1_l2 <- load %ASDASDSAD37
+%ASDASDSAD38 <- 8 * 0
+%ASDASDSAD38 <- 8 + %ASDASDSAD38
+%ASDASDSAD39 <- %m2 + %ASDASDSAD38
+%newVar0m2_l1 <- load %ASDASDSAD39
+%ASDASDSAD40 <- 8 * 1
+%ASDASDSAD40 <- 8 + %ASDASDSAD40
+%ASDASDSAD41 <- %m2 + %ASDASDSAD40
+%newVar0m2_l2 <- load %ASDASDSAD41
+%ASDASDSAD42 <- 8 * 0
+%ASDASDSAD42 <- 8 + %ASDASDSAD42
+%ASDASDSAD43 <- %m3 + %ASDASDSAD42
+%newVar0m3_l1 <- load %ASDASDSAD43
+%ASDASDSAD44 <- 8 * 1
+%ASDASDSAD44 <- 8 + %ASDASDSAD44
+%ASDASDSAD45 <- %m3 + %ASDASDSAD44
+%newVar0m3_l2 <- load %ASDASDSAD45
+%newVar_ciao__ciao_0 <- %newVar0m1_l2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m2_l1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_0 <- %newVar_ciao__ciao_0 = %newVar_ciao__ciao_1
+%newVar_ciao_0 <- %newVar_ciao_0 << 1
+%newVar_ciao_0 <- %newVar_ciao_0 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_0
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :go1
+:leave
+return
+:go1
+%newVar_ciao__ciao_0 <- %newVar0m3_l1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m1_l1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_1 <- %newVar_ciao__ciao_0 = %newVar_ciao__ciao_1
+%newVar_ciao_1 <- %newVar_ciao_1 << 1
+%newVar_ciao_1 <- %newVar_ciao_1 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :go2
+br :leave
+:go2
+%newVar_ciao__ciao_0 <- %newVar0m3_l2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m2_l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_2 <- %newVar_ciao__ciao_0 = %newVar_ciao__ciao_1
+%newVar_ciao_2 <- %newVar_ciao_2 << 1
+%newVar_ciao_2 <- %newVar_ciao_2 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :go
+br :leave
+:go
+%newVar1i <- 1
+:new_label0
+%newVar_ciao__ciao_0 <- %newVar1i
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m1_l1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_3 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_3 <- %newVar_ciao_3 << 1
+%newVar_ciao_3 <- %newVar_ciao_3 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_3
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body1_init
+%newVar0i <- 1
+:new_label3
+%newVar_ciao__ciao_0 <- %newVar0i
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m1_l1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_6 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_6 <- %newVar_ciao_6 << 1
+%newVar_ciao_6 <- %newVar_ciao_6 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_6
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body1
+br :leave
+:body1
+%newVar0j <- 1
+:new_label4
+%newVar_ciao__ciao_0 <- %newVar0j
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m2_l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_7 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_7 <- %newVar_ciao_7 << 1
+%newVar_ciao_7 <- %newVar_ciao_7 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_7
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body2
+%newVar_ciao__ciao_0 <- %newVar0i
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar0i <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar0i <- %newVar0i << 1
+%newVar0i <- %newVar0i + 1
+br :new_label3
+:body1_init
+%newVar1j <- 1
+:new_label1
+%newVar_ciao__ciao_0 <- %newVar1j
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m2_l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_4 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_4 <- %newVar_ciao_4 << 1
+%newVar_ciao_4 <- %newVar_ciao_4 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_4
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body2_init
+%newVar_ciao__ciao_0 <- %newVar1i
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1i <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1i <- %newVar1i << 1
+%newVar1i <- %newVar1i + 1
+br :new_label0
+:body2_init
+%newVar1k <- 1
+:new_label2
+%newVar_ciao__ciao_0 <- %newVar1k
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m1_l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_5 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_5 <- %newVar_ciao_5 << 1
+%newVar_ciao_5 <- %newVar_ciao_5 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_5
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body3_init
+%newVar_ciao__ciao_0 <- %newVar1j
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1j <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1j <- %newVar1j << 1
+%newVar1j <- %newVar1j + 1
+br :new_label1
+:body3_init
+%newVar_ciao__ciao_2 <- %newVar1i
+%newVar_ciao__ciao_2 <- %newVar_ciao__ciao_2 >> 1
+%newVar_ciao__ciao_3 <- %newVar1j
+%newVar_ciao__ciao_3 <- %newVar_ciao__ciao_3 >> 1
+%newVar_ciao__ciao_12 <- 0
+%newVar_ciao__ciao_13 <- %m3 = 0
+br %newVar_ciao__ciao_13 :new_label_ciao_0
+%ASDASDSAD46 <- 8 * 0
+%ASDASDSAD46 <- 8 + %ASDASDSAD46
+%ASDASDSAD47 <- %m3 + %ASDASDSAD46
+%newVar_ciao__ciao_14 <- load %ASDASDSAD47
+%newVar_ciao__ciao_14 <- %newVar_ciao__ciao_14 >> 1
+%newVar_ciao__ciao_12 <- %newVar_ciao__ciao_2
+%newVar_ciao__ciao_12 <- %newVar_ciao__ciao_12 << 1
+%newVar_ciao__ciao_12 <- %newVar_ciao__ciao_12 + 1
+%newVar_ciao__ciao_15 <- %newVar_ciao__ciao_2 < %newVar_ciao__ciao_14
+br %newVar_ciao__ciao_15 :new_label_ciao_2
+:new_label_ciao_0
+call tensor-error(0)
+:new_label_ciao_4
+%ASDASDSAD48 <- 24
+%ASDASDSAD49 <- 1
+%ASDASDSAD50 <- 0
+%ASDASDSAD51 <- %ASDASDSAD49 * %newVar_ciao__ciao_3
+%ASDASDSAD50 <- %ASDASDSAD50 + %ASDASDSAD51
+%ASDASDSAD52 <- 16 + %m3
+%ASDASDSAD53 <- load %ASDASDSAD52
+%ASDASDSAD53 <- %ASDASDSAD53 >> 1
+%ASDASDSAD49 <- %ASDASDSAD49 * %ASDASDSAD53
+%ASDASDSAD54 <- %ASDASDSAD49 * %newVar_ciao__ciao_2
+%ASDASDSAD50 <- %ASDASDSAD50 + %ASDASDSAD54
+%ASDASDSAD55 <- 8 + %m3
+%ASDASDSAD56 <- load %ASDASDSAD55
+%ASDASDSAD56 <- %ASDASDSAD56 >> 1
+%ASDASDSAD49 <- %ASDASDSAD49 * %ASDASDSAD56
+%ASDASDSAD50 <- %ASDASDSAD50 * 8
+%ASDASDSAD57 <- %ASDASDSAD50 + %ASDASDSAD48
+%ASDASDSAD58 <- %ASDASDSAD57 + %m3
+store %ASDASDSAD58 <- 1
+
+%newVar_ciao__ciao_0 <- %newVar1k
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1k <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1k <- %newVar1k << 1
+%newVar1k <- %newVar1k + 1
+br :new_label2
+:new_label_ciao_2
+%ASDASDSAD59 <- 8 * 1
+%ASDASDSAD59 <- 8 + %ASDASDSAD59
+%ASDASDSAD60 <- %m3 + %ASDASDSAD59
+%newVar_ciao__ciao_16 <- load %ASDASDSAD60
+%newVar_ciao__ciao_16 <- %newVar_ciao__ciao_16 >> 1
+%newVar_ciao__ciao_12 <- %newVar_ciao__ciao_3
+%newVar_ciao__ciao_12 <- %newVar_ciao__ciao_12 << 1
+%newVar_ciao__ciao_12 <- %newVar_ciao__ciao_12 + 1
+%newVar_ciao__ciao_17 <- %newVar_ciao__ciao_3 < %newVar_ciao__ciao_16
+br %newVar_ciao__ciao_17 :new_label_ciao_3
+br :new_label_ciao_0
+:new_label_ciao_3
+br :new_label_ciao_4
+:body2
+%newVar0k <- 1
+:new_label5
+%newVar_ciao__ciao_0 <- %newVar0k
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0m1_l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_8 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_8 <- %newVar_ciao_8 << 1
+%newVar_ciao_8 <- %newVar_ciao_8 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_8
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :body3
+%newVar_ciao__ciao_0 <- %newVar0j
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar0j <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar0j <- %newVar0j << 1
+%newVar0j <- %newVar0j + 1
+br :new_label4
+:body3
+%newVar_ciao__ciao_4 <- %newVar0i
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 >> 1
+%newVar_ciao__ciao_5 <- %newVar0k
+%newVar_ciao__ciao_5 <- %newVar_ciao__ciao_5 >> 1
+%newVar_ciao__ciao_18 <- 0
+%newVar_ciao__ciao_19 <- %m1 = 0
+br %newVar_ciao__ciao_19 :new_label_ciao_5
+%ASDASDSAD61 <- 8 * 0
+%ASDASDSAD61 <- 8 + %ASDASDSAD61
+%ASDASDSAD62 <- %m1 + %ASDASDSAD61
+%newVar_ciao__ciao_20 <- load %ASDASDSAD62
+%newVar_ciao__ciao_20 <- %newVar_ciao__ciao_20 >> 1
+%newVar_ciao__ciao_18 <- %newVar_ciao__ciao_4
+%newVar_ciao__ciao_18 <- %newVar_ciao__ciao_18 << 1
+%newVar_ciao__ciao_18 <- %newVar_ciao__ciao_18 + 1
+%newVar_ciao__ciao_21 <- %newVar_ciao__ciao_4 < %newVar_ciao__ciao_20
+br %newVar_ciao__ciao_21 :new_label_ciao_7
+:new_label_ciao_5
+call tensor-error(0)
+:new_label_ciao_9
+%ASDASDSAD63 <- 24
+%ASDASDSAD64 <- 1
+%ASDASDSAD65 <- 0
+%ASDASDSAD66 <- %ASDASDSAD64 * %newVar_ciao__ciao_5
+%ASDASDSAD65 <- %ASDASDSAD65 + %ASDASDSAD66
+%ASDASDSAD67 <- 16 + %m1
+%ASDASDSAD68 <- load %ASDASDSAD67
+%ASDASDSAD68 <- %ASDASDSAD68 >> 1
+%ASDASDSAD64 <- %ASDASDSAD64 * %ASDASDSAD68
+%ASDASDSAD69 <- %ASDASDSAD64 * %newVar_ciao__ciao_4
+%ASDASDSAD65 <- %ASDASDSAD65 + %ASDASDSAD69
+%ASDASDSAD70 <- 8 + %m1
+%ASDASDSAD71 <- load %ASDASDSAD70
+%ASDASDSAD71 <- %ASDASDSAD71 >> 1
+%ASDASDSAD64 <- %ASDASDSAD64 * %ASDASDSAD71
+%ASDASDSAD65 <- %ASDASDSAD65 * 8
+%ASDASDSAD72 <- %ASDASDSAD65 + %ASDASDSAD63
+%ASDASDSAD73 <- %ASDASDSAD72 + %m1
+%newVar3A <- load %ASDASDSAD73
+
+%newVar_ciao__ciao_6 <- %newVar0k
+%newVar_ciao__ciao_6 <- %newVar_ciao__ciao_6 >> 1
+%newVar_ciao__ciao_7 <- %newVar0j
+%newVar_ciao__ciao_7 <- %newVar_ciao__ciao_7 >> 1
+%newVar_ciao__ciao_24 <- 0
+%newVar_ciao__ciao_25 <- %m2 = 0
+br %newVar_ciao__ciao_25 :new_label_ciao_10
+%ASDASDSAD74 <- 8 * 0
+%ASDASDSAD74 <- 8 + %ASDASDSAD74
+%ASDASDSAD75 <- %m2 + %ASDASDSAD74
+%newVar_ciao__ciao_26 <- load %ASDASDSAD75
+%newVar_ciao__ciao_26 <- %newVar_ciao__ciao_26 >> 1
+%newVar_ciao__ciao_24 <- %newVar_ciao__ciao_6
+%newVar_ciao__ciao_24 <- %newVar_ciao__ciao_24 << 1
+%newVar_ciao__ciao_24 <- %newVar_ciao__ciao_24 + 1
+%newVar_ciao__ciao_27 <- %newVar_ciao__ciao_6 < %newVar_ciao__ciao_26
+br %newVar_ciao__ciao_27 :new_label_ciao_12
+:new_label_ciao_10
+call tensor-error(0)
+:new_label_ciao_14
+%ASDASDSAD76 <- 24
+%ASDASDSAD77 <- 1
+%ASDASDSAD78 <- 0
+%ASDASDSAD79 <- %ASDASDSAD77 * %newVar_ciao__ciao_7
+%ASDASDSAD78 <- %ASDASDSAD78 + %ASDASDSAD79
+%ASDASDSAD80 <- 16 + %m2
+%ASDASDSAD81 <- load %ASDASDSAD80
+%ASDASDSAD81 <- %ASDASDSAD81 >> 1
+%ASDASDSAD77 <- %ASDASDSAD77 * %ASDASDSAD81
+%ASDASDSAD82 <- %ASDASDSAD77 * %newVar_ciao__ciao_6
+%ASDASDSAD78 <- %ASDASDSAD78 + %ASDASDSAD82
+%ASDASDSAD83 <- 8 + %m2
+%ASDASDSAD84 <- load %ASDASDSAD83
+%ASDASDSAD84 <- %ASDASDSAD84 >> 1
+%ASDASDSAD77 <- %ASDASDSAD77 * %ASDASDSAD84
+%ASDASDSAD78 <- %ASDASDSAD78 * 8
+%ASDASDSAD85 <- %ASDASDSAD78 + %ASDASDSAD76
+%ASDASDSAD86 <- %ASDASDSAD85 + %m2
+%newVar3B <- load %ASDASDSAD86
+
+%newVar_ciao__ciao_0 <- %newVar3A
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar3B
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar3C <- %newVar_ciao__ciao_0 * %newVar_ciao__ciao_1
+%newVar3C <- %newVar3C << 1
+%newVar3C <- %newVar3C + 1
+%newVar_ciao__ciao_8 <- %newVar0i
+%newVar_ciao__ciao_8 <- %newVar_ciao__ciao_8 >> 1
+%newVar_ciao__ciao_9 <- %newVar0j
+%newVar_ciao__ciao_9 <- %newVar_ciao__ciao_9 >> 1
+%newVar_ciao__ciao_30 <- 0
+%newVar_ciao__ciao_31 <- %m3 = 0
+br %newVar_ciao__ciao_31 :new_label_ciao_15
+%ASDASDSAD87 <- 8 * 0
+%ASDASDSAD87 <- 8 + %ASDASDSAD87
+%ASDASDSAD88 <- %m3 + %ASDASDSAD87
+%newVar_ciao__ciao_32 <- load %ASDASDSAD88
+%newVar_ciao__ciao_32 <- %newVar_ciao__ciao_32 >> 1
+%newVar_ciao__ciao_30 <- %newVar_ciao__ciao_8
+%newVar_ciao__ciao_30 <- %newVar_ciao__ciao_30 << 1
+%newVar_ciao__ciao_30 <- %newVar_ciao__ciao_30 + 1
+%newVar_ciao__ciao_33 <- %newVar_ciao__ciao_8 < %newVar_ciao__ciao_32
+br %newVar_ciao__ciao_33 :new_label_ciao_17
+:new_label_ciao_15
+call tensor-error(0)
+:new_label_ciao_19
+%ASDASDSAD89 <- 24
+%ASDASDSAD90 <- 1
+%ASDASDSAD91 <- 0
+%ASDASDSAD92 <- %ASDASDSAD90 * %newVar_ciao__ciao_9
+%ASDASDSAD91 <- %ASDASDSAD91 + %ASDASDSAD92
+%ASDASDSAD93 <- 16 + %m3
+%ASDASDSAD94 <- load %ASDASDSAD93
+%ASDASDSAD94 <- %ASDASDSAD94 >> 1
+%ASDASDSAD90 <- %ASDASDSAD90 * %ASDASDSAD94
+%ASDASDSAD95 <- %ASDASDSAD90 * %newVar_ciao__ciao_8
+%ASDASDSAD91 <- %ASDASDSAD91 + %ASDASDSAD95
+%ASDASDSAD96 <- 8 + %m3
+%ASDASDSAD97 <- load %ASDASDSAD96
+%ASDASDSAD97 <- %ASDASDSAD97 >> 1
+%ASDASDSAD90 <- %ASDASDSAD90 * %ASDASDSAD97
+%ASDASDSAD91 <- %ASDASDSAD91 * 8
+%ASDASDSAD98 <- %ASDASDSAD91 + %ASDASDSAD89
+%ASDASDSAD99 <- %ASDASDSAD98 + %m3
+%newVar3D <- load %ASDASDSAD99
+
+%newVar_ciao__ciao_0 <- %newVar3D
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 9
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar3D <- %newVar_ciao__ciao_0 * %newVar_ciao__ciao_1
+%newVar3D <- %newVar3D << 1
+%newVar3D <- %newVar3D + 1
+%newVar_ciao__ciao_0 <- %newVar3D
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar3C
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar3D <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar3D <- %newVar3D << 1
+%newVar3D <- %newVar3D + 1
+%newVar_ciao__ciao_10 <- %newVar0i
+%newVar_ciao__ciao_10 <- %newVar_ciao__ciao_10 >> 1
+%newVar_ciao__ciao_11 <- %newVar0j
+%newVar_ciao__ciao_11 <- %newVar_ciao__ciao_11 >> 1
+%newVar_ciao__ciao_36 <- 0
+%newVar_ciao__ciao_37 <- %m3 = 0
+br %newVar_ciao__ciao_37 :new_label_ciao_20
+%ASDASDSAD100 <- 8 * 0
+%ASDASDSAD100 <- 8 + %ASDASDSAD100
+%ASDASDSAD101 <- %m3 + %ASDASDSAD100
+%newVar_ciao__ciao_38 <- load %ASDASDSAD101
+%newVar_ciao__ciao_38 <- %newVar_ciao__ciao_38 >> 1
+%newVar_ciao__ciao_36 <- %newVar_ciao__ciao_10
+%newVar_ciao__ciao_36 <- %newVar_ciao__ciao_36 << 1
+%newVar_ciao__ciao_36 <- %newVar_ciao__ciao_36 + 1
+%newVar_ciao__ciao_39 <- %newVar_ciao__ciao_10 < %newVar_ciao__ciao_38
+br %newVar_ciao__ciao_39 :new_label_ciao_22
+:new_label_ciao_20
+call tensor-error(0)
+:new_label_ciao_24
+%ASDASDSAD102 <- 24
+%ASDASDSAD103 <- 1
+%ASDASDSAD104 <- 0
+%ASDASDSAD105 <- %ASDASDSAD103 * %newVar_ciao__ciao_11
+%ASDASDSAD104 <- %ASDASDSAD104 + %ASDASDSAD105
+%ASDASDSAD106 <- 16 + %m3
+%ASDASDSAD107 <- load %ASDASDSAD106
+%ASDASDSAD107 <- %ASDASDSAD107 >> 1
+%ASDASDSAD103 <- %ASDASDSAD103 * %ASDASDSAD107
+%ASDASDSAD108 <- %ASDASDSAD103 * %newVar_ciao__ciao_10
+%ASDASDSAD104 <- %ASDASDSAD104 + %ASDASDSAD108
+%ASDASDSAD109 <- 8 + %m3
+%ASDASDSAD110 <- load %ASDASDSAD109
+%ASDASDSAD110 <- %ASDASDSAD110 >> 1
+%ASDASDSAD103 <- %ASDASDSAD103 * %ASDASDSAD110
+%ASDASDSAD104 <- %ASDASDSAD104 * 8
+%ASDASDSAD111 <- %ASDASDSAD104 + %ASDASDSAD102
+%ASDASDSAD112 <- %ASDASDSAD111 + %m3
+store %ASDASDSAD112 <- %newVar3D
+
+%newVar_ciao__ciao_0 <- %newVar0k
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar0k <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar0k <- %newVar0k << 1
+%newVar0k <- %newVar0k + 1
+br :new_label5
+:new_label_ciao_7
+%ASDASDSAD113 <- 8 * 1
+%ASDASDSAD113 <- 8 + %ASDASDSAD113
+%ASDASDSAD114 <- %m1 + %ASDASDSAD113
+%newVar_ciao__ciao_22 <- load %ASDASDSAD114
+%newVar_ciao__ciao_22 <- %newVar_ciao__ciao_22 >> 1
+%newVar_ciao__ciao_18 <- %newVar_ciao__ciao_5
+%newVar_ciao__ciao_18 <- %newVar_ciao__ciao_18 << 1
+%newVar_ciao__ciao_18 <- %newVar_ciao__ciao_18 + 1
+%newVar_ciao__ciao_23 <- %newVar_ciao__ciao_5 < %newVar_ciao__ciao_22
+br %newVar_ciao__ciao_23 :new_label_ciao_8
+br :new_label_ciao_5
+:new_label_ciao_8
+br :new_label_ciao_9
+:new_label_ciao_12
+%ASDASDSAD115 <- 8 * 1
+%ASDASDSAD115 <- 8 + %ASDASDSAD115
+%ASDASDSAD116 <- %m2 + %ASDASDSAD115
+%newVar_ciao__ciao_28 <- load %ASDASDSAD116
+%newVar_ciao__ciao_28 <- %newVar_ciao__ciao_28 >> 1
+%newVar_ciao__ciao_24 <- %newVar_ciao__ciao_7
+%newVar_ciao__ciao_24 <- %newVar_ciao__ciao_24 << 1
+%newVar_ciao__ciao_24 <- %newVar_ciao__ciao_24 + 1
+%newVar_ciao__ciao_29 <- %newVar_ciao__ciao_7 < %newVar_ciao__ciao_28
+br %newVar_ciao__ciao_29 :new_label_ciao_13
+br :new_label_ciao_10
+:new_label_ciao_13
+br :new_label_ciao_14
+:new_label_ciao_17
+%ASDASDSAD117 <- 8 * 1
+%ASDASDSAD117 <- 8 + %ASDASDSAD117
+%ASDASDSAD118 <- %m3 + %ASDASDSAD117
+%newVar_ciao__ciao_34 <- load %ASDASDSAD118
+%newVar_ciao__ciao_34 <- %newVar_ciao__ciao_34 >> 1
+%newVar_ciao__ciao_30 <- %newVar_ciao__ciao_9
+%newVar_ciao__ciao_30 <- %newVar_ciao__ciao_30 << 1
+%newVar_ciao__ciao_30 <- %newVar_ciao__ciao_30 + 1
+%newVar_ciao__ciao_35 <- %newVar_ciao__ciao_9 < %newVar_ciao__ciao_34
+br %newVar_ciao__ciao_35 :new_label_ciao_18
+br :new_label_ciao_15
+:new_label_ciao_18
+br :new_label_ciao_19
+:new_label_ciao_22
+%ASDASDSAD119 <- 8 * 1
+%ASDASDSAD119 <- 8 + %ASDASDSAD119
+%ASDASDSAD120 <- %m3 + %ASDASDSAD119
+%newVar_ciao__ciao_40 <- load %ASDASDSAD120
+%newVar_ciao__ciao_40 <- %newVar_ciao__ciao_40 >> 1
+%newVar_ciao__ciao_36 <- %newVar_ciao__ciao_11
+%newVar_ciao__ciao_36 <- %newVar_ciao__ciao_36 << 1
+%newVar_ciao__ciao_36 <- %newVar_ciao__ciao_36 + 1
+%newVar_ciao__ciao_41 <- %newVar_ciao__ciao_11 < %newVar_ciao__ciao_40
+br %newVar_ciao__ciao_41 :new_label_ciao_23
+br :new_label_ciao_20
+:new_label_ciao_23
+br :new_label_ciao_24
+}
+define @totalSum (%m) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%ASDASDSAD121 <- 8 * 0
+%ASDASDSAD121 <- 8 + %ASDASDSAD121
+%ASDASDSAD122 <- %m + %ASDASDSAD121
+%newVar0l1 <- load %ASDASDSAD122
+%ASDASDSAD123 <- 8 * 1
+%ASDASDSAD123 <- 8 + %ASDASDSAD123
+%ASDASDSAD124 <- %m + %ASDASDSAD123
+%newVar0l2 <- load %ASDASDSAD124
+%newVar0index1 <- 1
+%newVar0sum <- 1
+:new_label0
+%newVar_ciao__ciao_0 <- %newVar0index1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0l1
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_0 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_0 <- %newVar_ciao_0 << 1
+%newVar_ciao_0 <- %newVar_ciao_0 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_0
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :outerBody
+return %newVar0sum
+:outerBody
+%newVar1index2 <- 1
+:new_label1
+%newVar_ciao__ciao_0 <- %newVar1index2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar0l2
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar_ciao_1 <- %newVar_ciao__ciao_0 < %newVar_ciao__ciao_1
+%newVar_ciao_1 <- %newVar_ciao_1 << 1
+%newVar_ciao_1 <- %newVar_ciao_1 + 1
+%newVar_ciao__ciao_0 <- %newVar_ciao_1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+br %newVar_ciao__ciao_0 :innerBody
+%newVar_ciao__ciao_0 <- %newVar0index1
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar0index1 <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar0index1 <- %newVar0index1 << 1
+%newVar0index1 <- %newVar0index1 + 1
+br :new_label0
+:innerBody
+%newVar_ciao__ciao_2 <- %newVar0index1
+%newVar_ciao__ciao_2 <- %newVar_ciao__ciao_2 >> 1
+%newVar_ciao__ciao_3 <- %newVar1index2
+%newVar_ciao__ciao_3 <- %newVar_ciao__ciao_3 >> 1
+%newVar_ciao__ciao_4 <- 0
+%newVar_ciao__ciao_5 <- %m = 0
+br %newVar_ciao__ciao_5 :new_label_ciao_0
+%ASDASDSAD125 <- 8 * 0
+%ASDASDSAD125 <- 8 + %ASDASDSAD125
+%ASDASDSAD126 <- %m + %ASDASDSAD125
+%newVar_ciao__ciao_6 <- load %ASDASDSAD126
+%newVar_ciao__ciao_6 <- %newVar_ciao__ciao_6 >> 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_2
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 << 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 + 1
+%newVar_ciao__ciao_7 <- %newVar_ciao__ciao_2 < %newVar_ciao__ciao_6
+br %newVar_ciao__ciao_7 :new_label_ciao_2
+:new_label_ciao_0
+call tensor-error(0)
+:new_label_ciao_4
+%ASDASDSAD127 <- 24
+%ASDASDSAD128 <- 1
+%ASDASDSAD129 <- 0
+%ASDASDSAD130 <- %ASDASDSAD128 * %newVar_ciao__ciao_3
+%ASDASDSAD129 <- %ASDASDSAD129 + %ASDASDSAD130
+%ASDASDSAD131 <- 16 + %m
+%ASDASDSAD132 <- load %ASDASDSAD131
+%ASDASDSAD132 <- %ASDASDSAD132 >> 1
+%ASDASDSAD128 <- %ASDASDSAD128 * %ASDASDSAD132
+%ASDASDSAD133 <- %ASDASDSAD128 * %newVar_ciao__ciao_2
+%ASDASDSAD129 <- %ASDASDSAD129 + %ASDASDSAD133
+%ASDASDSAD134 <- 8 + %m
+%ASDASDSAD135 <- load %ASDASDSAD134
+%ASDASDSAD135 <- %ASDASDSAD135 >> 1
+%ASDASDSAD128 <- %ASDASDSAD128 * %ASDASDSAD135
+%ASDASDSAD129 <- %ASDASDSAD129 * 8
+%ASDASDSAD136 <- %ASDASDSAD129 + %ASDASDSAD127
+%ASDASDSAD137 <- %ASDASDSAD136 + %m
+%newVar2temp <- load %ASDASDSAD137
+
+%newVar_ciao__ciao_0 <- %newVar0sum
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- %newVar2temp
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar0sum <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar0sum <- %newVar0sum << 1
+%newVar0sum <- %newVar0sum + 1
+%newVar_ciao__ciao_0 <- %newVar1index2
+%newVar_ciao__ciao_0 <- %newVar_ciao__ciao_0 >> 1
+%newVar_ciao__ciao_1 <- 3
+%newVar_ciao__ciao_1 <- %newVar_ciao__ciao_1 >> 1
+%newVar1index2 <- %newVar_ciao__ciao_0 + %newVar_ciao__ciao_1
+%newVar1index2 <- %newVar1index2 << 1
+%newVar1index2 <- %newVar1index2 + 1
+br :new_label1
+:new_label_ciao_2
+%ASDASDSAD138 <- 8 * 1
+%ASDASDSAD138 <- 8 + %ASDASDSAD138
+%ASDASDSAD139 <- %m + %ASDASDSAD138
+%newVar_ciao__ciao_8 <- load %ASDASDSAD139
+%newVar_ciao__ciao_8 <- %newVar_ciao__ciao_8 >> 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_3
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 << 1
+%newVar_ciao__ciao_4 <- %newVar_ciao__ciao_4 + 1
+%newVar_ciao__ciao_9 <- %newVar_ciao__ciao_3 < %newVar_ciao__ciao_8
+br %newVar_ciao__ciao_9 :new_label_ciao_3
+br :new_label_ciao_0
+:new_label_ciao_3
+br :new_label_ciao_4
 }

@@ -326,26 +326,28 @@ namespace IR
         spaces,
         str_arrow,
         spaces,
-        TAO_PEGTL_STRING("new Array("),
+        TAO_PEGTL_STRING("new Array"),
+        spaces,                        
+        pegtl::one<'('>,               
         spaces,
         args_rule,
         spaces,
         TAO_PEGTL_STRING(")")
-    >
-    {};
+    > {};
 
     struct Instruction_Var_Tuple_Init_rule : pegtl::seq <
         var,
         spaces,
         str_arrow,
         spaces,
-        TAO_PEGTL_STRING("new Tuple("),
+        TAO_PEGTL_STRING("new Tuple"),
+        spaces,                       
+        pegtl::one<'('>,              
         spaces,
         t_rule,
         spaces,
         TAO_PEGTL_STRING(")")
-    >
-    {};
+    > {};
 
     struct End_Instruction_rule : pegtl::sor<
                                 Instruction_Br_Label_rule,

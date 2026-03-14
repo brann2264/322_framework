@@ -108,7 +108,7 @@ namespace IR
   }
 
   void TypeDef::generate_code(std::ofstream& stream) const {
-    // dont emit
+    var->generate_code(stream);
   }
 
   void Instruction_Var_Def::generate_code(std::ofstream& stream, Function& function_scope) const {
@@ -173,7 +173,6 @@ namespace IR
       stream << bodyOffset << " <- " << bodyOffset << " + " << dim_offset << "\n";
 
       std::string header_offset = temp_var();
-      // stream << header_offset << " <- " << 8*(i+1) << "\n";
       
       stream << header_offset << " <- " << 8*(i+1) << " + ";
       arr_var->generate_code(stream);
@@ -241,7 +240,6 @@ namespace IR
       stream << bodyOffset << " <- " << bodyOffset << " + " << dim_offset << "\n";
 
       std::string header_offset = temp_var();
-      // stream << header_offset << " <- " << 8*(i+1) << "\n";
       
       stream << header_offset << " <- " << 8*(i+1) << " + ";
       arr_var->generate_code(stream);
@@ -269,10 +267,12 @@ namespace IR
   }
   void Instruction_Var_Length_Var_T_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     std::string offset = temp_var();
-    stream << offset << " <- 8\n";
-    stream << offset << " <- " << offset << " + ";
+    
+    stream << offset << " <- 8 * ";
     t->generate_code(stream);
     stream << "\n";
+
+    stream << offset << " <- 8 + " << offset << "\n";
 
     std::string address = temp_var();
     stream << address << " <- ";
@@ -286,6 +286,17 @@ namespace IR
     var1->generate_code(stream);
     stream << " <- load";
     var2->generate_code(stream);
+    stream << "\n";
+
+    var1->generate_code(stream);
+    stream << " <- ";
+    var1->generate_code(stream);
+    stream << " << 1\n";
+
+    var1->generate_code(stream);
+    stream << " <- ";
+    var1->generate_code(stream);
+    stream << " + 1";
   }
   void Instruction_Var_Array_Init::generate_code(std::ofstream& stream, Function& function_scope) const {
     // shift args by one
@@ -353,7 +364,7 @@ namespace IR
     for (int i = 0; i < args.size(); i++){
       args[i]->generate_code(stream);
 
-      if (i != 0)
+      if (i != args.size()-1)
         stream << ", ";
     }
     stream << ")";
@@ -398,8 +409,9 @@ namespace IR
 
     for (int i = 0; i < params.size(); i++){
       params[i]->generate_code(stream);
+      var_types[params[i]->var->to_string()] = params[i]->type->var_type;
 
-      if (i != 0)
+      if (i != params.size()-1)
         stream << ", ";
     }
     stream << ") {\n";
