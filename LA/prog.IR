@@ -1,0 +1,52 @@
+define void @main () {
+::AAAA0
+int64 %LineNumber
+int64 %ErrorBool
+int64 %LengthVar
+int64 %DecodedVar0
+int64 %DecodedVar1
+int64 %DecodedVar2
+int64[] %a
+%a <- 0
+%LineNumber <- 3
+%ErrorBool <- %a = 0
+br %ErrorBool :AAAA1 :AAAA2
+:AAAA1
+tensor-error(%LineNumber)
+:AAAA2
+%DecodedVar0 <- 3 >> 1
+%DecodedVar1 <- 5 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- length var 0
+br %ErrorBool :AAAA3 :AAAA4
+:AAAA3
+tensor-error(%LineNumber, 0, %LengthVar, %DecodedVar0)
+:AAAA4
+%ErrorBool <- %DecodedVar0 < %LengthVar
+br %ErrorBool :AAAA5 :AAAA6
+:AAAA5
+tensor-error(%LineNumber, 0, %LengthVar, %DecodedVar0)
+:AAAA6
+%ErrorBool <- %DecodedVar1 < 0
+%LengthVar <- length var 1
+br %ErrorBool :AAAA7 :AAAA8
+:AAAA7
+tensor-error(%LineNumber, 1, %LengthVar, %DecodedVar1)
+:AAAA8
+%ErrorBool <- %DecodedVar1 < %LengthVar
+br %ErrorBool :AAAA9 :AAAA10
+:AAAA9
+tensor-error(%LineNumber, 1, %LengthVar, %DecodedVar1)
+:AAAA10
+var <- %a[%DecodedVar0, %DecodedVar1]
+call @test2()
+return
+}
+define void @test2 () {
+::AAAA11
+int64 %LineNumber
+int64 %ErrorBool
+int64 %LengthVar
+int64 %DecodedVar0
+return
+}
