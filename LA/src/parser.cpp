@@ -380,7 +380,7 @@ namespace LA
                                seps_with_comments,
                                pegtl::one<'{'>,
                                seps_with_comments,
-                               pegtl::plus<
+                               pegtl::star<
                                 pegtl::seq<
                                     seps_with_comments,
                                     Instructions_rule,
@@ -828,7 +828,6 @@ namespace LA
         template <typename Input>
         static void apply(const Input &in, Program &p)
         {   
-            std::cout << in.string() << std::endl;
             std::unique_ptr<Instruction_Call_Function> function_call = std::make_unique<Instruction_Call_Function>();
 
             while (parsed_items.size() != 0)
@@ -914,7 +913,7 @@ namespace LA
         Program p;
         bool success = parse<grammar, action>(fileInput, p);
         if (!success) {
-            std::cerr << "Parser failed before reaching the end of the file!" << std::endl;
+            std::cerr << "Parser failed before reaching the end of the file! (LA)" << std::endl;
             exit(1);
         }
 

@@ -1,0 +1,309 @@
+(@main
+(@main
+0
+%t <- 0
+%v <- 1
+mem rsp -8 <- :AAAA11_global_1_ret
+rdi <- 7
+call @createTuple 1
+:AAAA11_global_1_ret
+%t <- rax
+mem rsp -8 <- :AAAA11_global_2_ret
+rdi <- %t
+rsi <- 9
+call @myF 2
+:AAAA11_global_2_ret
+%v <- rax
+mem rsp -8 <- :AAAA11_global_3_ret
+rdi <- %v
+call print 1
+:AAAA11_global_3_ret
+return
+)
+(@createTuple
+1
+%p1 <- rdi
+%x2 <- 1
+%p <- 0
+%x2 <- 21
+mem rsp -8 <- :AAAA11_global_4_ret
+rdi <- 9
+rsi <- 1
+call allocate 2
+:AAAA11_global_4_ret
+%p <- rax
+%LineNumber <- 18
+%ErrorBool <- %p = 0
+cjump %ErrorBool = 1 :AAAA11_global_5
+:AAAA11_global_6
+%DecodedVar0 <- 1
+%DecodedVar0 >>= 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- mem %p 0
+%LengthVar <<= 1
+%LengthVar += 1
+cjump %ErrorBool = 1 :AAAA11_global_7
+:AAAA11_global_8
+%ErrorBool <- %LengthVar <= %DecodedVar0
+cjump %ErrorBool = 1 :AAAA11_global_9
+:AAAA11_global_10
+%ASDASDSAD0 <- 8
+%ASDASDSAD0 *= %DecodedVar0
+%ASDASDSAD0 += 8
+%ASDASDSAD0 += %p
+mem %ASDASDSAD0 0 <- 1
+%LineNumber <- 19
+%ErrorBool <- %p = 0
+cjump %ErrorBool = 1 :AAAA11_global_11
+:AAAA11_global_12
+%DecodedVar0 <- 3
+%DecodedVar0 >>= 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- mem %p 0
+%LengthVar <<= 1
+%LengthVar += 1
+cjump %ErrorBool = 1 :AAAA11_global_13
+:AAAA11_global_14
+%ErrorBool <- %LengthVar <= %DecodedVar0
+cjump %ErrorBool = 1 :AAAA11_global_15
+:AAAA11_global_16
+%ASDASDSAD1 <- 8
+%ASDASDSAD1 *= %DecodedVar0
+%ASDASDSAD1 += 8
+%ASDASDSAD1 += %p
+mem %ASDASDSAD1 0 <- 3
+%LineNumber <- 20
+%ErrorBool <- %p = 0
+cjump %ErrorBool = 1 :AAAA11_global_17
+:AAAA11_global_18
+%DecodedVar0 <- 5
+%DecodedVar0 >>= 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- mem %p 0
+%LengthVar <<= 1
+%LengthVar += 1
+cjump %ErrorBool = 1 :AAAA11_global_19
+:AAAA11_global_20
+%ErrorBool <- %LengthVar <= %DecodedVar0
+cjump %ErrorBool = 1 :AAAA11_global_21
+:AAAA11_global_22
+%ASDASDSAD2 <- 8
+%ASDASDSAD2 *= %DecodedVar0
+%ASDASDSAD2 += 8
+%ASDASDSAD2 += %p
+mem %ASDASDSAD2 0 <- %p1
+%LineNumber <- 21
+%ErrorBool <- %p = 0
+cjump %ErrorBool = 1 :AAAA11_global_23
+:AAAA11_global_24
+%DecodedVar0 <- 7
+%DecodedVar0 >>= 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- mem %p 0
+%LengthVar <<= 1
+%LengthVar += 1
+cjump %ErrorBool = 1 :AAAA11_global_25
+:AAAA11_global_26
+%ErrorBool <- %LengthVar <= %DecodedVar0
+cjump %ErrorBool = 1 :AAAA11_global_27
+:AAAA11_global_28
+%ASDASDSAD3 <- 8
+%ASDASDSAD3 *= %DecodedVar0
+%ASDASDSAD3 += 8
+%ASDASDSAD3 += %p
+mem %ASDASDSAD3 0 <- %x2
+rax <- %p
+return
+:AAAA11_global_5
+mem rsp -8 <- :AAAA11_global_29_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_29_ret
+goto :AAAA11_global_6
+:AAAA11_global_7
+mem rsp -8 <- :AAAA11_global_30_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_30_ret
+goto :AAAA11_global_8
+:AAAA11_global_9
+mem rsp -8 <- :AAAA11_global_31_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_31_ret
+goto :AAAA11_global_10
+:AAAA11_global_11
+mem rsp -8 <- :AAAA11_global_32_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_32_ret
+goto :AAAA11_global_12
+:AAAA11_global_13
+mem rsp -8 <- :AAAA11_global_33_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_33_ret
+goto :AAAA11_global_14
+:AAAA11_global_15
+mem rsp -8 <- :AAAA11_global_34_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_34_ret
+goto :AAAA11_global_16
+:AAAA11_global_17
+mem rsp -8 <- :AAAA11_global_35_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_35_ret
+goto :AAAA11_global_18
+:AAAA11_global_19
+mem rsp -8 <- :AAAA11_global_36_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_36_ret
+goto :AAAA11_global_20
+:AAAA11_global_21
+mem rsp -8 <- :AAAA11_global_37_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_37_ret
+goto :AAAA11_global_22
+:AAAA11_global_23
+mem rsp -8 <- :AAAA11_global_38_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_38_ret
+goto :AAAA11_global_24
+:AAAA11_global_25
+mem rsp -8 <- :AAAA11_global_39_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_39_ret
+goto :AAAA11_global_26
+:AAAA11_global_27
+mem rsp -8 <- :AAAA11_global_40_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_40_ret
+goto :AAAA11_global_28
+)
+(@myF
+2
+%c <- rdi
+%p1 <- rsi
+%x1 <- 1
+%x2 <- 1
+%r1 <- 1
+%r2 <- 1
+%LineNumber <- 30
+%ErrorBool <- %c = 0
+cjump %ErrorBool = 1 :AAAA11_global_41
+:AAAA11_global_42
+%DecodedVar0 <- 5
+%DecodedVar0 >>= 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- mem %c 0
+%LengthVar <<= 1
+%LengthVar += 1
+cjump %ErrorBool = 1 :AAAA11_global_43
+:AAAA11_global_44
+%ErrorBool <- %LengthVar <= %DecodedVar0
+cjump %ErrorBool = 1 :AAAA11_global_45
+:AAAA11_global_46
+%ASDASDSAD4 <- 8
+%ASDASDSAD4 *= %DecodedVar0
+%ASDASDSAD4 += 8
+%ASDASDSAD4 += %c
+%x1 <- mem %ASDASDSAD4 0
+%LineNumber <- 31
+%ErrorBool <- %c = 0
+cjump %ErrorBool = 1 :AAAA11_global_47
+:AAAA11_global_48
+%DecodedVar0 <- 7
+%DecodedVar0 >>= 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- mem %c 0
+%LengthVar <<= 1
+%LengthVar += 1
+cjump %ErrorBool = 1 :AAAA11_global_49
+:AAAA11_global_50
+%ErrorBool <- %LengthVar <= %DecodedVar0
+cjump %ErrorBool = 1 :AAAA11_global_51
+:AAAA11_global_52
+%ASDASDSAD5 <- 8
+%ASDASDSAD5 *= %DecodedVar0
+%ASDASDSAD5 += 8
+%ASDASDSAD5 += %c
+%x2 <- mem %ASDASDSAD5 0
+mem rsp -8 <- :AAAA11_global_53_ret
+rdi <- %x1
+call print 1
+:AAAA11_global_53_ret
+mem rsp -8 <- :AAAA11_global_54_ret
+rdi <- %x2
+call print 1
+:AAAA11_global_54_ret
+mem rsp -8 <- :AAAA11_global_55_ret
+rdi <- %p1
+call print 1
+:AAAA11_global_55_ret
+%DecodedVar0 <- %x1
+%DecodedVar0 >>= 1
+%DecodedVar1 <- %x2
+%DecodedVar1 >>= 1
+%r1 <- %DecodedVar0
+%r1 += %DecodedVar1
+%r1 <<= 1
+%r1 += 1
+mem rsp -8 <- :AAAA11_global_56_ret
+rdi <- %r1
+call print 1
+:AAAA11_global_56_ret
+%DecodedVar0 <- %r1
+%DecodedVar0 >>= 1
+%DecodedVar1 <- %p1
+%DecodedVar1 >>= 1
+%r2 <- %DecodedVar0
+%r2 += %DecodedVar1
+%r2 <<= 1
+%r2 += 1
+rax <- %r2
+return
+:AAAA11_global_41
+mem rsp -8 <- :AAAA11_global_57_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_57_ret
+goto :AAAA11_global_42
+:AAAA11_global_43
+mem rsp -8 <- :AAAA11_global_58_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_58_ret
+goto :AAAA11_global_44
+:AAAA11_global_45
+mem rsp -8 <- :AAAA11_global_59_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_59_ret
+goto :AAAA11_global_46
+:AAAA11_global_47
+mem rsp -8 <- :AAAA11_global_60_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_60_ret
+goto :AAAA11_global_48
+:AAAA11_global_49
+mem rsp -8 <- :AAAA11_global_61_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_61_ret
+goto :AAAA11_global_50
+:AAAA11_global_51
+mem rsp -8 <- :AAAA11_global_62_ret
+rdi <- %LineNumber
+call tuple-error 1
+:AAAA11_global_62_ret
+goto :AAAA11_global_52
+)
+)

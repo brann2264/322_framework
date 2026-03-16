@@ -97,20 +97,20 @@ namespace LA
     type->generate_code(stream, function_scope);
     stream << " ";
     name->generate_code(stream, function_scope);
-
-    if (type->name_type == EType::TUPLE || type->name_type == EType::ARRAY){
-      stream << "\n";
-      name->generate_code(stream, function_scope);
-      stream << " <- 0";
-    } else if (type->name_type == EType::INT){
-      stream << "\n";
-      name->generate_code(stream, function_scope);
-      stream << " <- 1";
-    }
   }
 
   void Instruction_Name_Def::generate_code(std::ofstream& stream, Function& function_scope) const {
     type_def->generate_code(stream, function_scope);
+
+    if (type_def->type->name_type == EType::TUPLE || type_def->type->name_type == EType::ARRAY){
+      stream << "\n";
+      type_def->name->generate_code(stream, function_scope);
+      stream << " <- 0";
+    } else if (type_def->type->name_type == EType::INT){
+      stream << "\n";
+      type_def->name->generate_code(stream, function_scope);
+      stream << " <- 1";
+    }
   }
 
   void Instruction_Name_T_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
@@ -148,7 +148,7 @@ namespace LA
 
   void Instruction_Name_Array_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
     //allocation check
-    stream << "%" << "LineNumber <- " << line_number << "\n";
+    stream << "%" << "LineNumber <- " << (line_number<<1)+1 << "\n";
     stream << "%" << "ErrorBool <- ";
     arr_name->generate_code(stream, function_scope);
     stream << " = 0\n";
@@ -157,10 +157,14 @@ namespace LA
     std::string correct_label = temp_label();
     stream << "br %" << "ErrorBool " + error_label + " " + correct_label << "\n";
     stream << error_label << "\n";
-    if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
-      stream << "tuple-error(%" << "LineNumber)\n";
-    else
-      stream << "tensor-error(%" << "LineNumber)\n";
+    // stream << "%" << "LengthVar <- length ";
+    // arr_name->generate_code(stream, function_scope);
+    // stream << "\n";
+    // if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
+    //   stream << "call tuple-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+    // else
+    stream << "call tensor-error(%" << "LineNumber)\n";
+    stream << "br " << correct_label << "\n";
     stream << correct_label << "\n";
 
     // decode accesses (only generate when its vars?)
@@ -174,7 +178,7 @@ namespace LA
     for (int i = 0; i < idxs.size(); i++){
       stream << "%" << "ErrorBool <- %" << "DecodedVar" << i << " < 0\n";
       stream << "%" << "LengthVar <- length ";
-      name->generate_code(stream, function_scope);
+      arr_name->generate_code(stream, function_scope);
       // tuple calls without dim
       if (function_scope.name_types[arr_name->to_string()] == EType::ARRAY)
         stream << " " << i;
@@ -186,15 +190,25 @@ namespace LA
       stream << "br %" << "ErrorBool " + error_access_label + " " + correct_access_label << "\n";
       stream << error_access_label << "\n";
 
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " << 1\n";
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " + 1\n";
+
       if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
-        stream << "tuple-error(%" << "LineNumber)\n";
+        stream << "call tuple-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
       else if (idxs.size() > 1)
-        stream << "tensor-error(%" << "LineNumber, " << i << ", %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+        stream << "call tensor-error(%" << "LineNumber, " << (i<<1)+1 << ", %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
       else
-        stream << "tensor-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+        stream << "call tensor-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " >> 1\n";
+      
+      stream << "br " << correct_access_label << "\n";
       stream << correct_access_label << "\n";
 
-      stream << "%" << "ErrorBool <- %" << "DecodedVar" << i << " < %" << "LengthVar\n";
+      stream << "%" << "LengthVar <- %" << "LengthVar >> 1\n";
+      stream << "%" << "ErrorBool <- %" << "DecodedVar" << i << " >= %" << "LengthVar\n";
+      stream << "%" << "LengthVar <- %" << "LengthVar << 1\n";
+      stream << "%" << "LengthVar <- %" << "LengthVar + 1\n";
 
       std::string error_access_label2 = temp_label();
       std::string correct_access_label2 = temp_label();
@@ -202,44 +216,119 @@ namespace LA
       stream << "br %" << "ErrorBool " + error_access_label2 + " " + correct_access_label2 << "\n";
       stream << error_access_label2 << "\n";
 
-      if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
-        stream << "tuple-error(%" << "LineNumber)\n";
-      else if (idxs.size() > 1)
-        stream << "tensor-error(%" << "LineNumber, " << i << ", %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
-      else
-        stream << "tensor-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " << 1\n";
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " + 1\n";
 
+      if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
+        stream << "call tuple-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      else if (idxs.size() > 1)
+        stream << "call tensor-error(%" << "LineNumber, " << (i<<1)+1 << ", %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      else
+        stream << "call tensor-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " >> 1\n";
+
+      stream << "br " << correct_access_label2 << "\n";
       stream << correct_access_label2 << "\n";
     }
-
 
     name->generate_code(stream, function_scope);
     stream << " <- ";
     arr_name->generate_code(stream, function_scope);
-    stream << "[";
     for (int i = 0; i < idxs.size(); i++){
-      stream << "%" << "DecodedVar" << i;
-      if (i != idxs.size()-1)
-        stream << ", ";
+      stream << "[%" << "DecodedVar" << i << "]";
     }
-    stream << "]";
   }
   void Instruction_Array_T_Assignment::generate_code(std::ofstream& stream, Function& function_scope) const {
+    //allocation check
+    stream << "%" << "LineNumber <- " << (line_number<<1)+1 << "\n";
+    stream << "%" << "ErrorBool <- ";
+    arr_name->generate_code(stream, function_scope);
+    stream << " = 0\n";
+    
+    std::string error_label = temp_label();
+    std::string correct_label = temp_label();
+    stream << "br %" << "ErrorBool " + error_label + " " + correct_label << "\n";
+    stream << error_label << "\n";
+    // if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
+    //   stream << "call tuple-error(%" << "LineNumber)\n";
+    // else
+    stream << "call tensor-error(%" << "LineNumber)\n";
+    stream << "br " << correct_label << "\n";
+    stream << correct_label << "\n";
+
     // decode accesses (only generate when its vars?)
     for (int i = 0; i < idxs.size(); i++){
       stream << "%" << "DecodedVar" << i << " <- ";
       idxs[i]->generate_code(stream, function_scope);
       stream << " >> 1\n";
     }
+
+    //access check
+    for (int i = 0; i < idxs.size(); i++){
+      stream << "%" << "ErrorBool <- %" << "DecodedVar" << i << " < 0\n";
+      stream << "%" << "LengthVar <- length ";
+      arr_name->generate_code(stream, function_scope);
+      // tuple calls without dim
+      if (function_scope.name_types[arr_name->to_string()] == EType::ARRAY)
+        stream << " " << i;
+      stream << "\n";
+
+      std::string error_access_label = temp_label();
+      std::string correct_access_label = temp_label();
+
+      stream << "br %" << "ErrorBool " + error_access_label + " " + correct_access_label << "\n";
+      stream << error_access_label << "\n";
+
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " << 1\n";
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " + 1\n";
+    
+      if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
+        stream << "call tuple-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      else if (idxs.size() > 1)
+        stream << "call tensor-error(%" << "LineNumber, " << (i<<1)+1 << ", %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      else
+        stream << "call tensor-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " >> 1\n";
+      
+      stream << "br " << correct_access_label << "\n";
+      stream << correct_access_label << "\n";
+
+      stream << "%" << "LengthVar <- %" << "LengthVar >> 1\n";
+      stream << "%" << "ErrorBool <- %" << "DecodedVar" << i << " >= %" << "LengthVar\n";
+      stream << "%" << "LengthVar <- %" << "LengthVar << 1\n";
+      stream << "%" << "LengthVar <- %" << "LengthVar + 1\n";
+
+      std::string error_access_label2 = temp_label();
+      std::string correct_access_label2 = temp_label();
+
+      stream << "br %" << "ErrorBool " + error_access_label2 + " " + correct_access_label2 << "\n";
+      stream << error_access_label2 << "\n";
+
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " << 1\n";
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " + 1\n";
+
+      if (function_scope.name_types[arr_name->to_string()] == EType::TUPLE)
+        stream << "call tuple-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      else if (idxs.size() > 1)
+        stream << "call tensor-error(%" << "LineNumber, " << (i<<1)+1 << ", %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      else
+        stream << "call tensor-error(%" << "LineNumber, %" << "LengthVar, %" << "DecodedVar" << i << ")\n";
+      
+      stream << "%" << "DecodedVar" << i << " <- %" << "DecodedVar" << i << " >> 1\n";
+
+      stream << "br " << correct_access_label2 << "\n";
+      stream << correct_access_label2 << "\n";
+    }
+
+    // actual instruction
     
     arr_name->generate_code(stream, function_scope);
-    stream << "[";
     for (int i = 0; i < idxs.size(); i++){
-      stream << "%" << "DecodedVar" << i;
-      if (i != idxs.size()-1)
-        stream << ", ";
+      stream << "[%" << "DecodedVar" << i << "]";
     }
-    stream << "] <- ";
+    stream << " <- ";
     t->generate_code(stream, function_scope);
   }
   void Instruction_Name_Tuple_Init::generate_code(std::ofstream& stream, Function& function_scope) const {
@@ -326,6 +415,10 @@ namespace LA
     stream << " ";
     function_name->generate_code(stream, *this);
     stream << " (";
+
+    for (auto& param : params){
+      name_types.insert({param->name->to_string(), param->type->name_type});
+    }
 
     for (int i = 0; i < params.size(); i++){
       params[i]->generate_code(stream, *this);

@@ -1,0 +1,220 @@
+define @main () {
+
+
+
+
+
+%t <- 0
+
+%v <- 1
+%t <- call @createTuple(7)
+%v <- call @myF(%t, 9)
+call print(%v)
+return
+}
+define @createTuple (%p1) {
+
+
+
+
+
+
+%x2 <- 1
+
+%p <- 0
+%x2 <- 21
+%p <- call allocate(9, 1)
+%LineNumber <- 18
+%ErrorBool <- %p = 0
+br %ErrorBool :AAAA2
+:AAAA3
+%DecodedVar0 <- 1 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- load%p
+%LengthVar <- %LengthVar << 1
+%LengthVar <- %LengthVar + 1
+br %ErrorBool :AAAA4
+:AAAA5
+%ErrorBool <- %DecodedVar0 >= %LengthVar
+br %ErrorBool :AAAA6
+:AAAA7
+%ASDASDSAD0 <- 8 * %DecodedVar0
+%ASDASDSAD0 <- %ASDASDSAD0 + 8
+%ASDASDSAD0 <- %ASDASDSAD0 + %p
+store %ASDASDSAD0 <- 1
+%LineNumber <- 19
+%ErrorBool <- %p = 0
+br %ErrorBool :AAAA8
+:AAAA9
+%DecodedVar0 <- 3 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- load%p
+%LengthVar <- %LengthVar << 1
+%LengthVar <- %LengthVar + 1
+br %ErrorBool :AAAA10
+:AAAA11
+%ErrorBool <- %DecodedVar0 >= %LengthVar
+br %ErrorBool :AAAA12
+:AAAA13
+%ASDASDSAD1 <- 8 * %DecodedVar0
+%ASDASDSAD1 <- %ASDASDSAD1 + 8
+%ASDASDSAD1 <- %ASDASDSAD1 + %p
+store %ASDASDSAD1 <- 3
+%LineNumber <- 20
+%ErrorBool <- %p = 0
+br %ErrorBool :AAAA14
+:AAAA15
+%DecodedVar0 <- 5 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- load%p
+%LengthVar <- %LengthVar << 1
+%LengthVar <- %LengthVar + 1
+br %ErrorBool :AAAA16
+:AAAA17
+%ErrorBool <- %DecodedVar0 >= %LengthVar
+br %ErrorBool :AAAA18
+:AAAA19
+%ASDASDSAD2 <- 8 * %DecodedVar0
+%ASDASDSAD2 <- %ASDASDSAD2 + 8
+%ASDASDSAD2 <- %ASDASDSAD2 + %p
+store %ASDASDSAD2 <- %p1
+%LineNumber <- 21
+%ErrorBool <- %p = 0
+br %ErrorBool :AAAA20
+:AAAA21
+%DecodedVar0 <- 7 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- load%p
+%LengthVar <- %LengthVar << 1
+%LengthVar <- %LengthVar + 1
+br %ErrorBool :AAAA22
+:AAAA23
+%ErrorBool <- %DecodedVar0 >= %LengthVar
+br %ErrorBool :AAAA24
+:AAAA25
+%ASDASDSAD3 <- 8 * %DecodedVar0
+%ASDASDSAD3 <- %ASDASDSAD3 + 8
+%ASDASDSAD3 <- %ASDASDSAD3 + %p
+store %ASDASDSAD3 <- %x2
+return %p
+:AAAA2
+call tuple-error(%LineNumber)
+br :AAAA3
+:AAAA4
+call tuple-error(%LineNumber)
+br :AAAA5
+:AAAA6
+call tuple-error(%LineNumber)
+br :AAAA7
+:AAAA8
+call tuple-error(%LineNumber)
+br :AAAA9
+:AAAA10
+call tuple-error(%LineNumber)
+br :AAAA11
+:AAAA12
+call tuple-error(%LineNumber)
+br :AAAA13
+:AAAA14
+call tuple-error(%LineNumber)
+br :AAAA15
+:AAAA16
+call tuple-error(%LineNumber)
+br :AAAA17
+:AAAA18
+call tuple-error(%LineNumber)
+br :AAAA19
+:AAAA20
+call tuple-error(%LineNumber)
+br :AAAA21
+:AAAA22
+call tuple-error(%LineNumber)
+br :AAAA23
+:AAAA24
+call tuple-error(%LineNumber)
+br :AAAA25
+}
+define @myF (%c, %p1) {
+
+
+
+
+
+
+%x1 <- 1
+
+%x2 <- 1
+
+%r1 <- 1
+
+%r2 <- 1
+%LineNumber <- 30
+%ErrorBool <- %c = 0
+br %ErrorBool :AAAA27
+:AAAA28
+%DecodedVar0 <- 5 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- load%c
+%LengthVar <- %LengthVar << 1
+%LengthVar <- %LengthVar + 1
+br %ErrorBool :AAAA29
+:AAAA30
+%ErrorBool <- %DecodedVar0 >= %LengthVar
+br %ErrorBool :AAAA31
+:AAAA32
+%ASDASDSAD4 <- 8 * %DecodedVar0
+%ASDASDSAD4 <- %ASDASDSAD4 + 8
+%ASDASDSAD4 <- %ASDASDSAD4 + %c
+%x1 <- load %ASDASDSAD4
+%LineNumber <- 31
+%ErrorBool <- %c = 0
+br %ErrorBool :AAAA33
+:AAAA34
+%DecodedVar0 <- 7 >> 1
+%ErrorBool <- %DecodedVar0 < 0
+%LengthVar <- load%c
+%LengthVar <- %LengthVar << 1
+%LengthVar <- %LengthVar + 1
+br %ErrorBool :AAAA35
+:AAAA36
+%ErrorBool <- %DecodedVar0 >= %LengthVar
+br %ErrorBool :AAAA37
+:AAAA38
+%ASDASDSAD5 <- 8 * %DecodedVar0
+%ASDASDSAD5 <- %ASDASDSAD5 + 8
+%ASDASDSAD5 <- %ASDASDSAD5 + %c
+%x2 <- load %ASDASDSAD5
+call print(%x1)
+call print(%x2)
+call print(%p1)
+%DecodedVar0 <- %x1 >> 1
+%DecodedVar1 <- %x2 >> 1
+%r1 <- %DecodedVar0 + %DecodedVar1
+%r1 <- %r1 << 1
+%r1 <- %r1 + 1
+call print(%r1)
+%DecodedVar0 <- %r1 >> 1
+%DecodedVar1 <- %p1 >> 1
+%r2 <- %DecodedVar0 + %DecodedVar1
+%r2 <- %r2 << 1
+%r2 <- %r2 + 1
+return %r2
+:AAAA27
+call tuple-error(%LineNumber)
+br :AAAA28
+:AAAA29
+call tuple-error(%LineNumber)
+br :AAAA30
+:AAAA31
+call tuple-error(%LineNumber)
+br :AAAA32
+:AAAA33
+call tuple-error(%LineNumber)
+br :AAAA34
+:AAAA35
+call tuple-error(%LineNumber)
+br :AAAA36
+:AAAA37
+call tuple-error(%LineNumber)
+br :AAAA38
+}

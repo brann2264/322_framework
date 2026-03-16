@@ -130,7 +130,6 @@ namespace LA {
     
     for (auto& instruction: instructions){
       str_rep += instruction->to_string() + "\n";
-      std::cout << str_rep << std::endl;
     }
     return str_rep + "}";
   }
@@ -157,7 +156,7 @@ namespace LA {
 
       if (startBB){
         if (label_inst == nullptr){
-          blocked_instructions.push_back(std::make_unique<Instruction_Label>(std::make_shared<Label>(temp_label())));
+          blocked_instructions.push_back(std::make_unique<Instruction_Label>(std::make_shared<Label>(temp_label().substr((1)))));
         }
         startBB = false;
       } else if (label_inst != nullptr){
@@ -182,6 +181,17 @@ namespace LA {
       }
 
       blocked_instructions.push_back(std::move(instructions[i]));
+    }
+
+
+    if (instructions.size() == 0){
+      // IR requires at least one basic block
+      blocked_instructions.push_back(std::make_unique<Instruction_Label>(std::make_shared<Label>(temp_label().substr((1)))));
+      if (return_type->name_type == EType::VOID){
+        blocked_instructions.push_back(std::make_unique<Instruction_Return>());
+      } else {
+        blocked_instructions.push_back(std::make_unique<Instruction_Return_T>(std::make_shared<Number>(0)));
+      }
     }
 
     // last block not terminated, add return
