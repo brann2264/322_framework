@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <unordered_set>
 
 namespace L3
 {
@@ -27,6 +28,7 @@ namespace L3
     int end_idx = -1;
     std::vector<int> instruction_ids;
     std::vector<std::unique_ptr<InstructionTree>> trees;
+    std::unordered_set<std::string> end_contexts_vars;
 
     void add(int instruction_id)
     {
@@ -40,6 +42,7 @@ namespace L3
       return instruction_ids.empty();
     }
     void generate_trees(std::vector<std::unique_ptr<Instruction>> &instructions);
+    void merge_trees();
   };
 
   class InstructionTree
@@ -47,18 +50,71 @@ namespace L3
   public:
     std::string value;
     std::shared_ptr<Item> item;
-    int depth;
     ItemType type;
     std::vector<std::unique_ptr<InstructionTree>> children;
     std::vector<std::unique_ptr<Tile>> tiles;
 
-    InstructionTree(std::string val, ItemType _type) : value(val), type(_type) {};
+    bool isWrite = false;
+    bool isRead = true;
+    bool isVar;
+
+    InstructionTree(std::string val, ItemType _type) : value(val), type(_type), isVar(val[0]=='%') {};
+
+    std::unordered_set<std::string> getWriteVars();
+    std::unordered_set<std::string> getReadVars();
+
     void add_child(std::unique_ptr<InstructionTree> child)
     {
-      depth = std::max(child->depth + 1, depth);
       children.push_back(std::move(child));
     }
-    void tile_tree();
+    void tile_tree(InstructionTree& tree_root);
+    void get_leaves(std::vector<InstructionTree*>& leaves){
+      if (children.size() == 0){
+        leaves.push_back(this);
+        return;
+      }
+
+      for (auto& child : children){
+        child->get_leaves(leaves);
+      }
+    }
+
+    bool merge_tree(std::unique_ptr<InstructionTree>& other_tree){
+      
+      for (int i = 0; i < children.size(); i++){
+
+        if (children[i]->children.size() != 0){
+          if (children[i]->merge_tree(other_tree)){
+            return true;
+          }
+        } else if (children[i]->value == other_tree->value) {
+          other_tree->isRead = true;
+          children[i] = std::move(other_tree);
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // ai code to help visualize tree
+    void print(std::string prefix, bool isLast) const {
+
+      std::cout << prefix;
+      std::cout << (isLast ? "└── " : "├── ");
+      
+      std::cout << this->value << std::endl;
+
+      std::string next_prefix = prefix + (isLast ? "    " : "│   ");
+
+      for (size_t i = 0; i < this->children.size(); ++i) {
+          bool child_is_last = (i == this->children.size() - 1);
+          
+          if (this->children[i] != nullptr) {
+              this->children[i]->print(next_prefix, child_is_last);
+          }
+      }
+  }
+
   };
 
   class Tile
@@ -72,17 +128,27 @@ namespace L3
   {
   public:
     W_Assign_S_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
     std::shared_ptr<Item> s;
   };
+  // class W_Assign_W_Assign_S_Tile : public Tile
+  // {
+  // public:
+  //   W_Assign_W_Assign_S_Tile(InstructionTree &tree);
+  //   static bool tileable(InstructionTree &tree, InstructionTree& root);
+  //   void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
+
+  //   std::shared_ptr<Item> w;
+  //   std::shared_ptr<Item> s;
+  // };
   class W_Assign_Mem_Tile : public Tile
   {
   public:
     W_Assign_Mem_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -92,7 +158,7 @@ namespace L3
   {
   public:
     Mem_Assign_S_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> x;
@@ -106,7 +172,7 @@ namespace L3
   {
   public:
     W_Aop_T_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -117,7 +183,7 @@ namespace L3
   {
   public:
     W_Sop_Sx_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -128,7 +194,7 @@ namespace L3
   {
   public:
     W_Sop_N_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -139,7 +205,7 @@ namespace L3
   {
   public:
     Mem_Increment_T_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> x;
@@ -149,7 +215,7 @@ namespace L3
   {
   public:
     Mem_Decrement_T_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> x;
@@ -159,7 +225,7 @@ namespace L3
   {
   public:
     W_Increment_Mem_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -169,7 +235,7 @@ namespace L3
   {
   public:
     W_Decrement_Mem_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -179,7 +245,7 @@ namespace L3
   {
   public:
     W_Assign_T_Cmp_T_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -191,7 +257,7 @@ namespace L3
   {
   public:
     Cjump_T_Label_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> t;
@@ -202,7 +268,7 @@ namespace L3
   {
   public:
     Goto_Label_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> label;
@@ -211,7 +277,7 @@ namespace L3
   {
   public:
     Return_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> t;
@@ -221,7 +287,7 @@ namespace L3
   {
   public:
     W_Increment_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -230,7 +296,7 @@ namespace L3
   {
   public:
     W_Decrement_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -239,7 +305,7 @@ namespace L3
   {
   public:
     Address_Calculation_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w1;
@@ -252,7 +318,7 @@ namespace L3
   {
   public:
     W_Assign_T_Aop_T_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;
@@ -265,7 +331,7 @@ namespace L3
   {
   public:
     W_Assign_T_Sop_T_Tile(InstructionTree &tree);
-    static bool tileable(InstructionTree &tree);
+    static bool tileable(InstructionTree &tree, InstructionTree& root);
     void generate_code(std::ofstream &stream, Function &function_scope, Program &global_scope) const override;
 
     std::shared_ptr<Item> w;

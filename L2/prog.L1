@@ -1,106 +1,48 @@
 (@main
 (@main
 	0 8
-	rax <- 0
-	mem rsp 56 <- rax
-	rax <- 0
-	mem rsp 48 <- rax
-	rax <- 0
-	mem rsp 40 <- rax
-	rax <- 601
-	mem rsp 32 <- rax
-	rax <- mem rsp 32
-	rax <- rax
-	rax >>= 1
+	:NNNNNNNNNNNNNNNNNN_global_1
+	goto :NNNNNNNNNNNNNNNNNN_global_2
+	:NNNNNNNNNNNNNNNNNN_global_3
+	return
+	:NNNNNNNNNNNNNNNNNN_global_4
+	rdx <- mem rsp 40
+	rsi <- rdx
+	rsi >>= 1
+	rdi <- 3
+	rdi >>= 1
+	rdx <- rsi
+	mem rsp 40 <- rdx
+	rdx <- mem rsp 40
+	rdx += rdi
+	mem rsp 40 <- rdx
+	rdx <- mem rsp 40
+	rdx <<= 1
+	mem rsp 40 <- rdx
+	rdx <- mem rsp 40
+	rdx += 1
+	mem rsp 40 <- rdx
+	goto :NNNNNNNNNNNNNNNNNN_global_5
+	:NNNNNNNNNNNNNNNNNN_global_5
+	rdx <- mem rsp 40
+	rsi <- rdx
+	rsi >>= 1
 	rdx <- mem rsp 32
-	rdx <- rdx
-	rdx >>= 1
-	rax <- rax
-	rax *= rdx
-	rax += 2
-	rax <<= 1
-	rax += 1
-	mem rsp -8 <- :new_label_ciao_10_global_1_ret
-	rdi <- rax
-	rsi <- 1
-	call allocate 2
-	:new_label_ciao_10_global_1_ret
-	rax <- rax
-	mem rsp 40 <- rax
-	rax <- mem rsp 40
-	rax <- rax
-	rax += 8
-	rdx <- mem rsp 32
-	mem rax 0 <- rdx
-	rax <- mem rsp 40
-	rax <- rax
-	rax += 16
-	rdx <- mem rsp 32
-	mem rax 0 <- rdx
-	rax <- mem rsp 32
-	rax <- rax
-	rax >>= 1
-	rdx <- mem rsp 32
-	rdx <- rdx
-	rdx >>= 1
-	rax <- rax
-	rax *= rdx
-	rax += 2
-	rax <<= 1
-	rax += 1
-	mem rsp -8 <- :new_label_ciao_10_global_2_ret
-	rdi <- rax
-	rsi <- 1
-	call allocate 2
-	:new_label_ciao_10_global_2_ret
-	rax <- rax
-	mem rsp 48 <- rax
-	rax <- mem rsp 48
-	rax <- rax
-	rax += 8
-	rdx <- mem rsp 32
-	mem rax 0 <- rdx
-	rax <- mem rsp 48
-	rax <- rax
-	rax += 16
-	rdx <- mem rsp 32
-	mem rax 0 <- rdx
-	rax <- mem rsp 32
-	rdx <- rax
-	rdx >>= 1
-	rax <- mem rsp 32
-	rax <- rax
-	rax >>= 1
-	rdx <- rdx
-	rdx *= rax
-	rdx += 2
+	rdi <- rdx
+	rdi >>= 1
+	rdx <- rsi < rdi
 	rdx <<= 1
 	rdx += 1
-	mem rsp -8 <- :new_label_ciao_10_global_3_ret
-	rdi <- rdx
-	rsi <- 1
-	call allocate 2
-	:new_label_ciao_10_global_3_ret
-	rdx <- rax
-	mem rsp 56 <- rdx
-	rdx <- mem rsp 56
-	rdx <- rdx
-	rdx += 8
-	rsi <- mem rsp 32
-	mem rdx 0 <- rsi
-	rdx <- mem rsp 56
-	rdx <- rdx
-	rdx += 16
-	rsi <- mem rsp 32
-	mem rdx 0 <- rsi
-	rdx <- 9
-	mem rsp 24 <- rdx
-	rdx <- 9
-	mem rsp 16 <- rdx
+	rsi <- rdx
+	rsi >>= 1
+	cjump rsi = 1 :NNNNNNNNNNNNNNNNNN_global_6
+	goto :NNNNNNNNNNNNNNNNNN_global_3
+	:NNNNNNNNNNNNNNNNNN_global_6
 	rdx <- 1
-	mem rsp 8 <- rdx
-	:new_label_ciao_10_global_4
-	rdx <- mem rsp 8
+	mem rsp 16 <- rdx
+	goto :NNNNNNNNNNNNNNNNNN_global_7
+	:NNNNNNNNNNNNNNNNNN_global_7
+	rdx <- mem rsp 16
 	rsi <- rdx
 	rsi >>= 1
 	rdx <- mem rsp 24
@@ -111,72 +53,151 @@
 	rdx += 1
 	rsi <- rdx
 	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_5
-	return
-	:new_label_ciao_10_global_5
-	rdx <- 1
-	mem rsp 0 <- rdx
-	:new_label_ciao_10_global_6
-	rdx <- mem rsp 0
-	rsi <- rdx
-	rsi >>= 1
-	rdx <- mem rsp 16
-	rdi <- rdx
-	rdi >>= 1
-	rdx <- rsi < rdi
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_7
-	rdx <- mem rsp 8
-	rsi <- rdx
-	rsi >>= 1
-	rdi <- 3
-	rdi >>= 1
-	rdx <- rsi
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx += rdi
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx <<= 1
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx += 1
-	mem rsp 8 <- rdx
-	goto :new_label_ciao_10_global_4
-	:new_label_ciao_10_global_7
-	mem rsp -8 <- :new_label_ciao_10_global_8_ret
-	rax <- mem rsp 40
+	cjump rsi = 1 :NNNNNNNNNNNNNNNNNN_global_8
+	goto :NNNNNNNNNNNNNNNNNN_global_4
+	:NNNNNNNNNNNNNNNNNN_global_8
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_9_ret
+	rax <- mem rsp 0
 	rdi <- rax
 	rax <- mem rsp 48
 	rsi <- rax
 	rax <- mem rsp 56
 	rdx <- rax
-	rax <- mem rsp 8
+	rax <- mem rsp 40
 	rcx <- rax
-	rax <- mem rsp 0
+	rax <- mem rsp 16
 	r8 <- rax
 	call @computeAndPrint 5
-	:new_label_ciao_10_global_8_ret
-	rdx <- mem rsp 0
+	:NNNNNNNNNNNNNNNNNN_global_9_ret
+	rdx <- mem rsp 16
 	rsi <- rdx
 	rsi >>= 1
 	rdi <- 3
 	rdi >>= 1
 	rdx <- rsi
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
+	mem rsp 16 <- rdx
+	rdx <- mem rsp 16
 	rdx += rdi
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
+	mem rsp 16 <- rdx
+	rdx <- mem rsp 16
 	rdx <<= 1
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
+	mem rsp 16 <- rdx
+	rdx <- mem rsp 16
 	rdx += 1
-	mem rsp 0 <- rdx
-	goto :new_label_ciao_10_global_6
+	mem rsp 16 <- rdx
+	goto :NNNNNNNNNNNNNNNNNN_global_7
+	:NNNNNNNNNNNNNNNNNN_global_2
+	rax <- 0
+	mem rsp 56 <- rax
+	rax <- 0
+	mem rsp 48 <- rax
+	rax <- 0
+	mem rsp 0 <- rax
+	rax <- 601
+	mem rsp 8 <- rax
+	rax <- mem rsp 8
+	rax <- rax
+	rax >>= 1
+	rdx <- rax
+	rax <- mem rsp 8
+	rax <- rax
+	rax >>= 1
+	rdx *= rax
+	rdx <<= 1
+	rdx += 1
+	rdx += 6
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_10_ret
+	rdi <- rdx
+	rsi <- 1
+	call allocate 2
+	:NNNNNNNNNNNNNNNNNN_global_10_ret
+	rax <- rax
+	mem rsp 0 <- rax
+	rax <- mem rsp 0
+	rax <- rax
+	rax += 8
+	mem rax 0 <- 5
+	rax <- mem rsp 0
+	rdx <- rax
+	rdx += 16
+	rax <- mem rsp 8
+	mem rdx 0 <- rax
+	rax <- mem rsp 0
+	rax <- rax
+	rax += 24
+	rdx <- mem rsp 8
+	mem rax 0 <- rdx
+	rax <- mem rsp 8
+	rax <- rax
+	rax >>= 1
+	rdx <- rax
+	rax <- mem rsp 8
+	rax <- rax
+	rax >>= 1
+	rdx *= rax
+	rdx <<= 1
+	rdx += 1
+	rdx += 6
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_11_ret
+	rdi <- rdx
+	rsi <- 1
+	call allocate 2
+	:NNNNNNNNNNNNNNNNNN_global_11_ret
+	rax <- rax
+	mem rsp 48 <- rax
+	rax <- mem rsp 48
+	rax <- rax
+	rax += 8
+	mem rax 0 <- 5
+	rax <- mem rsp 48
+	rdx <- rax
+	rdx += 16
+	rax <- mem rsp 8
+	mem rdx 0 <- rax
+	rax <- mem rsp 48
+	rax <- rax
+	rax += 24
+	rdx <- mem rsp 8
+	mem rax 0 <- rdx
+	rax <- mem rsp 8
+	rax <- rax
+	rax >>= 1
+	rdx <- rax
+	rax <- mem rsp 8
+	rax <- rax
+	rax >>= 1
+	rdx *= rax
+	rdx <<= 1
+	rdx += 1
+	rdx += 6
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_12_ret
+	rdi <- rdx
+	rsi <- 1
+	call allocate 2
+	:NNNNNNNNNNNNNNNNNN_global_12_ret
+	rdx <- rax
+	mem rsp 56 <- rdx
+	rdx <- mem rsp 56
+	rdx <- rdx
+	rdx += 8
+	mem rdx 0 <- 5
+	rdx <- mem rsp 56
+	rsi <- rdx
+	rsi += 16
+	rdx <- mem rsp 8
+	mem rsi 0 <- rdx
+	rdx <- mem rsp 56
+	rsi <- rdx
+	rsi += 24
+	rdx <- mem rsp 8
+	mem rsi 0 <- rdx
+	rdx <- 9
+	mem rsp 32 <- rdx
+	rdx <- 9
+	mem rsp 24 <- rdx
+	rdx <- 1
+	mem rsp 40 <- rdx
+	goto :NNNNNNNNNNNNNNNNNN_global_5
 )
 (@computeAndPrint
 	5 4
@@ -189,20 +210,23 @@
 	rdx <- rcx
 	rax <- r8
 	mem rsp 16 <- rax
-	mem rsp -8 <- :new_label_ciao_10_global_9_ret
+	:NNNNNNNNNNNNNNNNNN_global_13
+	goto :NNNNNNNNNNNNNNNNNN_global_14
+	:NNNNNNNNNNNNNNNNNN_global_14
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_15_ret
 	rax <- mem rsp 8
 	rdi <- rax
 	rsi <- rdx
 	call @initMatrix 2
-	:new_label_ciao_10_global_9_ret
-	mem rsp -8 <- :new_label_ciao_10_global_10_ret
+	:NNNNNNNNNNNNNNNNNN_global_15_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_16_ret
 	rax <- mem rsp 24
 	rdi <- rax
 	rax <- mem rsp 16
 	rsi <- rax
 	call @initMatrix 2
-	:new_label_ciao_10_global_10_ret
-	mem rsp -8 <- :new_label_ciao_10_global_11_ret
+	:NNNNNNNNNNNNNNNNNN_global_16_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_17_ret
 	rax <- mem rsp 8
 	rdi <- rax
 	rax <- mem rsp 24
@@ -210,1044 +234,1004 @@
 	rax <- mem rsp 0
 	rdx <- rax
 	call @matrixMultiplication 3
-	:new_label_ciao_10_global_11_ret
-	mem rsp -8 <- :new_label_ciao_10_global_12_ret
+	:NNNNNNNNNNNNNNNNNN_global_17_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_18_ret
 	rax <- mem rsp 8
 	rdi <- rax
 	call @totalSum 1
-	:new_label_ciao_10_global_12_ret
+	:NNNNNNNNNNNNNNNNNN_global_18_ret
 	rax <- rax
-	mem rsp -8 <- :new_label_ciao_10_global_13_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_19_ret
 	rdi <- rax
 	call print 1
-	:new_label_ciao_10_global_13_ret
-	mem rsp -8 <- :new_label_ciao_10_global_14_ret
+	:NNNNNNNNNNNNNNNNNN_global_19_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_20_ret
 	rax <- mem rsp 24
 	rdi <- rax
 	call @totalSum 1
-	:new_label_ciao_10_global_14_ret
+	:NNNNNNNNNNNNNNNNNN_global_20_ret
 	rax <- rax
-	mem rsp -8 <- :new_label_ciao_10_global_15_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_21_ret
 	rdi <- rax
 	call print 1
-	:new_label_ciao_10_global_15_ret
-	mem rsp -8 <- :new_label_ciao_10_global_16_ret
+	:NNNNNNNNNNNNNNNNNN_global_21_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_22_ret
 	rax <- mem rsp 0
 	rdi <- rax
 	call @totalSum 1
-	:new_label_ciao_10_global_16_ret
+	:NNNNNNNNNNNNNNNNNN_global_22_ret
 	rax <- rax
-	mem rsp -8 <- :new_label_ciao_10_global_17_ret
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_23_ret
 	rdi <- rax
 	call print 1
-	:new_label_ciao_10_global_17_ret
+	:NNNNNNNNNNNNNNNNNN_global_23_ret
 	return
 )
 (@initMatrix
-	2 5
+	2 3
 	rdx <- rdi
-	mem rsp 32 <- rdx
+	mem rsp 16 <- rdx
 	rsi <- rsi
-	rdi <- 8
-	rdi *= 0
-	rdi += 8
-	rdx <- mem rsp 32
+	:NNNNNNNNNNNNNNNNNN_global_24
+	goto :NNNNNNNNNNNNNNNNNN_global_25
+	:NNNNNNNNNNNNNNNNNN_global_26
+	return
+	:NNNNNNNNNNNNNNNNNN_global_27
+	r11 <- r8
+	r11 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	r8 <- r11
+	r8 += r10
+	r8 <<= 1
+	r8 += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_28
+	:NNNNNNNNNNNNNNNNNN_global_28
+	r11 <- r8
+	r11 >>= 1
+	rdx <- mem rsp 0
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r11 < r10
+	rdx <<= 1
+	rdx += 1
+	r11 <- rdx
+	r11 >>= 1
+	cjump r11 = 1 :NNNNNNNNNNNNNNNNNN_global_29
+	goto :NNNNNNNNNNNNNNNNNN_global_26
+	:NNNNNNNNNNNNNNNNNN_global_29
+	r9 <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_30
+	:NNNNNNNNNNNNNNNNNN_global_30
+	r11 <- r9
+	r11 >>= 1
+	r10 <- rdi
+	r10 >>= 1
+	rdx <- r11 < r10
+	rdx <<= 1
+	rdx += 1
+	r11 <- rdx
+	r11 >>= 1
+	cjump r11 = 1 :NNNNNNNNNNNNNNNNNN_global_31
+	goto :NNNNNNNNNNNNNNNNNN_global_27
+	:NNNNNNNNNNNNNNNNNN_global_31
+	r11 <- rsi
+	r11 >>= 1
+	r10 <- r8
+	r10 >>= 1
+	rdx <- r11
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx += r10
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx <<= 1
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx += 1
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	r11 <- rdx
+	r11 >>= 1
+	r10 <- r9
+	r10 >>= 1
+	rdx <- r11
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx += r10
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx <<= 1
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx += 1
+	mem rsp 8 <- rdx
+	r11 <- r8
+	r11 >>= 1
+	r10 <- r9
+	r10 >>= 1
+	rdx <- 0
+	rdx <- mem rsp 16
+	rdx <- rdx = 0
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_32
+	goto :NNNNNNNNNNNNNNNNNN_global_33
+	:NNNNNNNNNNNNNNNNNN_global_33
+	rdx <- r11
+	rdx <<= 1
+	rdx += 1
+	rdx <- 0
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 16
+	rdx <- rdx
+	rdx += rcx
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r11 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_34
+	goto :NNNNNNNNNNNNNNNNNN_global_32
+	:NNNNNNNNNNNNNNNNNN_global_34
+	rdx <- r10
+	rdx <<= 1
+	rdx += 1
+	rdx <- 1
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 16
+	rdx <- rdx
+	rdx += rcx
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r10 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_35
+	goto :NNNNNNNNNNNNNNNNNN_global_32
+	:NNNNNNNNNNNNNNNNNN_global_35
+	goto :NNNNNNNNNNNNNNNNNN_global_36
+	:NNNNNNNNNNNNNNNNNN_global_36
+	rdx <- mem rsp 16
+	rdx <- rdx
+	rdx += 24
+	rdx <- mem rdx 0
+	rcx <- rdx
+	rcx >>= 1
+	rdx <- 1
+	rdx *= rcx
+	r11 <- r11
+	r11 *= rdx
+	rdx <- 0
+	rdx += r11
+	rdx += r10
+	r11 <- rdx
+	r11 *= 8
+	r11 += 32
+	rdx <- mem rsp 16
+	r10 <- rdx
+	r10 += r11
+	rdx <- mem rsp 8
+	mem r10 0 <- rdx
+	r11 <- r9
+	r11 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	r9 <- r11
+	r9 += r10
+	r9 <<= 1
+	r9 += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_30
+	:NNNNNNNNNNNNNNNNNN_global_32
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_37_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_37_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_36
+	:NNNNNNNNNNNNNNNNNN_global_25
+	rdx <- 0
+	rdx *= 8
+	rdi <- rdx
+	rdi += 16
+	rdx <- mem rsp 16
+	rdx <- rdx
+	rdx += rdi
+	rdx <- mem rdx 0
+	mem rsp 0 <- rdx
+	rdx <- 1
+	rdx *= 8
+	rdi <- rdx
+	rdi += 16
+	rdx <- mem rsp 16
 	rdx <- rdx
 	rdx += rdi
 	rdi <- mem rdx 0
-	r8 <- 8
-	r8 *= 1
-	r8 += 8
-	rdx <- mem rsp 32
+	r8 <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_28
+)
+(@matrixMultiplication
+	3 6
+	rdi <- rdi
+	rsi <- rsi
+	mem rsp 40 <- rsi
 	rdx <- rdx
-	rdx += r8
-	rdx <- mem rdx 0
-	mem rsp 16 <- rdx
-	rdx <- 1
-	mem rsp 0 <- rdx
-	:new_label_ciao_10_global_18
-	rdx <- mem rsp 0
-	r8 <- rdx
-	r8 >>= 1
-	r9 <- rdi
+	mem rsp 32 <- rdx
+	:NNNNNNNNNNNNNNNNNN_global_38
+	goto :NNNNNNNNNNNNNNNNNN_global_39
+	:NNNNNNNNNNNNNNNNNN_global_40
+	return
+	:NNNNNNNNNNNNNNNNNN_global_41
+	r9 <- rsi
 	r9 >>= 1
-	rdx <- r8 < r9
+	r10 <- 3
+	r10 >>= 1
+	rsi <- r9
+	rsi += r10
+	rsi <<= 1
+	rsi += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_42
+	:NNNNNNNNNNNNNNNNNN_global_42
+	r9 <- rsi
+	r9 >>= 1
+	rdx <- mem rsp 24
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 < r10
 	rdx <<= 1
 	rdx += 1
-	r8 <- rdx
-	r8 >>= 1
-	cjump r8 = 1 :new_label_ciao_10_global_19
-	return
-	:new_label_ciao_10_global_19
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_43
+	goto :NNNNNNNNNNNNNNNNNN_global_40
+	:NNNNNNNNNNNNNNNNNN_global_43
 	rdx <- 1
 	mem rsp 8 <- rdx
-	:new_label_ciao_10_global_20
+	goto :NNNNNNNNNNNNNNNNNN_global_44
+	:NNNNNNNNNNNNNNNNNN_global_44
 	rdx <- mem rsp 8
-	r8 <- rdx
-	r8 >>= 1
+	r9 <- rdx
+	r9 >>= 1
 	rdx <- mem rsp 16
-	r9 <- rdx
-	r9 >>= 1
-	rdx <- r8 < r9
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 < r10
 	rdx <<= 1
 	rdx += 1
-	r8 <- rdx
-	r8 >>= 1
-	cjump r8 = 1 :new_label_ciao_10_global_21
-	rdx <- mem rsp 0
-	r8 <- rdx
-	r8 >>= 1
-	r9 <- 3
-	r9 >>= 1
-	rdx <- r8
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
-	rdx += r9
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
-	rdx <<= 1
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
-	rdx += 1
-	mem rsp 0 <- rdx
-	goto :new_label_ciao_10_global_18
-	:new_label_ciao_10_global_21
-	r8 <- rsi
-	r8 >>= 1
-	rdx <- mem rsp 0
 	r9 <- rdx
 	r9 >>= 1
-	r8 <- r8
-	r8 += r9
-	r8 <<= 1
-	r8 += 1
-	r8 <- r8
-	r8 >>= 1
-	rdx <- mem rsp 8
-	r9 <- rdx
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_45
+	goto :NNNNNNNNNNNNNNNNNN_global_41
+	:NNNNNNNNNNNNNNNNNN_global_45
+	r8 <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_46
+	:NNNNNNNNNNNNNNNNNN_global_46
+	r9 <- r8
 	r9 >>= 1
-	r8 <- r8
-	r8 += r9
-	r8 <<= 1
-	r8 += 1
 	rdx <- mem rsp 0
 	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 < r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_47
+	goto :NNNNNNNNNNNNNNNNNN_global_48
+	:NNNNNNNNNNNNNNNNNN_global_47
+	r10 <- rsi
+	r10 >>= 1
+	r9 <- r8
+	r9 >>= 1
+	rdx <- 0
+	rdx <- rdi = 0
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_49
+	goto :NNNNNNNNNNNNNNNNNN_global_50
+	:NNNNNNNNNNNNNNNNNN_global_50
+	rdx <- r10
+	rdx <<= 1
+	rdx += 1
+	rdx <- 0
+	rdx *= 8
+	r11 <- rdx
+	r11 += 16
+	rdx <- rdi
+	rdx += r11
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r10 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_51
+	goto :NNNNNNNNNNNNNNNNNN_global_49
+	:NNNNNNNNNNNNNNNNNN_global_51
+	rdx <- r9
+	rdx <<= 1
+	rdx += 1
+	rdx <- 1
+	rdx *= 8
+	r11 <- rdx
+	r11 += 16
+	rdx <- rdi
+	rdx += r11
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r9 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_52
+	goto :NNNNNNNNNNNNNNNNNN_global_49
+	:NNNNNNNNNNNNNNNNNN_global_52
+	goto :NNNNNNNNNNNNNNNNNN_global_53
+	:NNNNNNNNNNNNNNNNNN_global_53
+	rdx <- rdi
+	rdx += 24
+	rdx <- mem rdx 0
+	rdx <- rdx
+	rdx >>= 1
+	r11 <- 1
+	r11 *= rdx
+	r10 <- r10
+	r10 *= r11
+	rdx <- 0
+	rdx += r10
+	rdx += r9
+	r9 <- rdx
+	r9 *= 8
+	r9 += 32
+	rdx <- rdi
+	rdx += r9
+	r9 <- mem rdx 0
+	r10 <- r8
 	r10 >>= 1
 	rdx <- mem rsp 8
 	r11 <- rdx
 	r11 >>= 1
-	r9 <- 0
-	rdx <- mem rsp 32
-	rdx <- rdx = 0
-	cjump rdx = 1 :new_label_ciao_10_global_22
-	r9 <- 8
-	r9 *= 0
-	r9 += 8
-	rdx <- mem rsp 32
-	rdx <- rdx
-	rdx += r9
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r9 <- r10
-	r9 <<= 1
-	r9 += 1
-	rdx <- r10 < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_23
-	:new_label_ciao_10_global_22
-	mem rsp -8 <- :new_label_ciao_10_global_24_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_24_ret
-	:new_label_ciao_10_global_25
-	r9 <- 24
-	rcx <- 1
 	rdx <- 0
-	mem rsp 24 <- rdx
-	rdx <- rcx
-	rdx *= r11
-	r11 <- mem rsp 24
-	r11 += rdx
-	mem rsp 24 <- r11
-	r11 <- 16
-	rdx <- mem rsp 32
-	r11 += rdx
-	rdx <- mem r11 0
-	rdx >>= 1
-	rcx *= rdx
-	r11 <- rcx
-	r11 *= r10
-	rdx <- mem rsp 24
-	rdx += r11
-	mem rsp 24 <- rdx
-	rdx <- 8
-	r10 <- mem rsp 32
-	rdx += r10
-	rdx <- mem rdx 0
-	rdx >>= 1
-	rcx *= rdx
-	rdx <- mem rsp 24
+	rdx <- mem rsp 40
+	rdx <- rdx = 0
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_54
+	goto :NNNNNNNNNNNNNNNNNN_global_55
+	:NNNNNNNNNNNNNNNNNN_global_55
+	rdx <- r10
+	rdx <<= 1
+	rdx += 1
+	rdx <- 0
 	rdx *= 8
-	mem rsp 24 <- rdx
-	rdx <- mem rsp 24
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 40
 	rdx <- rdx
-	rdx += r9
-	rdx <- rdx
-	r9 <- mem rsp 32
-	rdx += r9
-	mem rdx 0 <- r8
-	rdx <- mem rsp 8
-	r8 <- rdx
-	r8 >>= 1
-	r9 <- 3
-	r9 >>= 1
-	rdx <- r8
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx += r9
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx <<= 1
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx += 1
-	mem rsp 8 <- rdx
-	goto :new_label_ciao_10_global_20
-	:new_label_ciao_10_global_23
-	r9 <- 8
-	r9 *= 1
-	r9 += 8
-	rdx <- mem rsp 32
-	rdx <- rdx
-	rdx += r9
+	rdx += rcx
 	rdx <- mem rdx 0
 	rdx >>= 1
-	r9 <- r11
-	r9 <<= 1
-	r9 += 1
+	rdx <- r10 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_56
+	goto :NNNNNNNNNNNNNNNNNN_global_54
+	:NNNNNNNNNNNNNNNNNN_global_56
+	rdx <- r11
+	rdx <<= 1
+	rdx += 1
+	rdx <- 1
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 40
+	rdx <- rdx
+	rdx += rcx
+	rdx <- mem rdx 0
+	rdx >>= 1
 	rdx <- r11 < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_26
-	goto :new_label_ciao_10_global_22
-	:new_label_ciao_10_global_26
-	goto :new_label_ciao_10_global_25
-)
-(@matrixMultiplication
-	3 10
-	rdi <- rdi
-	mem rsp 72 <- rdi
-	rsi <- rsi
-	mem rsp 64 <- rsi
-	rdx <- rdx
-	mem rsp 56 <- rdx
-	rsi <- 8
-	rsi *= 0
-	rsi += 8
-	rdx <- mem rsp 72
-	rdx <- rdx
-	rdx += rsi
-	rdx <- mem rdx 0
-	mem rsp 40 <- rdx
-	rsi <- 8
-	rsi *= 1
-	rsi += 8
-	rdx <- mem rsp 72
-	rdx <- rdx
-	rdx += rsi
-	rdx <- mem rdx 0
-	mem rsp 32 <- rdx
-	rsi <- 8
-	rsi *= 0
-	rsi += 8
-	rdx <- mem rsp 64
-	rdx <- rdx
-	rdx += rsi
-	rdi <- mem rdx 0
-	rsi <- 8
-	rsi *= 1
-	rsi += 8
-	rdx <- mem rsp 64
-	rdx <- rdx
-	rdx += rsi
-	rdx <- mem rdx 0
-	mem rsp 24 <- rdx
-	rsi <- 8
-	rsi *= 0
-	rsi += 8
-	rdx <- mem rsp 56
-	rdx <- rdx
-	rdx += rsi
-	r10 <- mem rdx 0
-	rsi <- 8
-	rsi *= 1
-	rsi += 8
-	rdx <- mem rsp 56
-	rdx <- rdx
-	rdx += rsi
-	r9 <- mem rdx 0
-	rdx <- mem rsp 32
-	rsi <- rdx
-	rsi >>= 1
-	r8 <- rdi
-	r8 >>= 1
-	rdx <- rsi = r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_27
-	:new_label_ciao_10_global_28
-	return
-	:new_label_ciao_10_global_27
-	rsi <- r10
-	rsi >>= 1
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_57
+	goto :NNNNNNNNNNNNNNNNNN_global_54
+	:NNNNNNNNNNNNNNNNNN_global_57
+	goto :NNNNNNNNNNNNNNNNNN_global_58
+	:NNNNNNNNNNNNNNNNNN_global_58
+	r9 <- r9
+	r9 >>= 1
 	rdx <- mem rsp 40
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi = r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_29
-	goto :new_label_ciao_10_global_28
-	:new_label_ciao_10_global_29
-	rsi <- r9
-	rsi >>= 1
-	rdx <- mem rsp 24
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi = r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_30
-	goto :new_label_ciao_10_global_28
-	:new_label_ciao_10_global_30
-	rdx <- 1
-	mem rsp 0 <- rdx
-	:new_label_ciao_10_global_31
-	rdx <- mem rsp 0
-	rsi <- rdx
-	rsi >>= 1
-	rdx <- mem rsp 40
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi < r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_32
-	rdx <- 1
-	mem rsp 8 <- rdx
-	:new_label_ciao_10_global_33
-	rdx <- mem rsp 8
-	rsi <- rdx
-	rsi >>= 1
-	rdx <- mem rsp 40
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi < r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_34
-	goto :new_label_ciao_10_global_28
-	:new_label_ciao_10_global_34
-	rdx <- 1
-	mem rsp 48 <- rdx
-	:new_label_ciao_10_global_35
-	rdx <- mem rsp 48
-	rsi <- rdx
-	rsi >>= 1
-	rdx <- mem rsp 24
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi < r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_36
-	rdx <- mem rsp 8
-	rsi <- rdx
-	rsi >>= 1
-	r8 <- 3
-	r8 >>= 1
-	rdx <- rsi
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx += r8
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx <<= 1
-	mem rsp 8 <- rdx
-	rdx <- mem rsp 8
-	rdx += 1
-	mem rsp 8 <- rdx
-	goto :new_label_ciao_10_global_33
-	:new_label_ciao_10_global_32
-	rdi <- 1
-	:new_label_ciao_10_global_37
-	rsi <- rdi
-	rsi >>= 1
-	rdx <- mem rsp 24
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi < r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_38
-	rdx <- mem rsp 0
-	rsi <- rdx
-	rsi >>= 1
-	r8 <- 3
-	r8 >>= 1
-	rdx <- rsi
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
-	rdx += r8
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
-	rdx <<= 1
-	mem rsp 0 <- rdx
-	rdx <- mem rsp 0
-	rdx += 1
-	mem rsp 0 <- rdx
-	goto :new_label_ciao_10_global_31
-	:new_label_ciao_10_global_38
-	r9 <- 1
-	:new_label_ciao_10_global_39
-	rsi <- r9
-	rsi >>= 1
-	rdx <- mem rsp 32
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi < r8
-	rdx <<= 1
-	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_40
-	rsi <- rdi
-	rsi >>= 1
-	r8 <- 3
-	r8 >>= 1
-	rdi <- rsi
-	rdi += r8
-	rdi <<= 1
-	rdi += 1
-	goto :new_label_ciao_10_global_37
-	:new_label_ciao_10_global_40
-	rdx <- mem rsp 0
-	r8 <- rdx
-	r8 >>= 1
-	rsi <- rdi
-	rsi >>= 1
-	r10 <- 0
-	rdx <- mem rsp 56
-	rdx <- rdx = 0
-	cjump rdx = 1 :new_label_ciao_10_global_41
-	r10 <- 8
-	r10 *= 0
-	r10 += 8
-	rdx <- mem rsp 56
 	rdx <- rdx
+	rdx += 24
+	rdx <- mem rdx 0
+	rcx <- rdx
+	rcx >>= 1
+	rdx <- 1
+	rdx *= rcx
+	r10 <- r10
+	r10 *= rdx
+	rdx <- 0
 	rdx += r10
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r10 <- r8
-	r10 <<= 1
-	r10 += 1
-	rdx <- r8 < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_42
-	:new_label_ciao_10_global_41
-	mem rsp -8 <- :new_label_ciao_10_global_43_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_43_ret
-	:new_label_ciao_10_global_44
-	r11 <- 24
-	rcx <- 1
-	r10 <- 0
-	rdx <- rcx
-	rdx *= rsi
-	r10 += rdx
-	rsi <- 16
-	rdx <- mem rsp 56
-	rsi += rdx
-	rdx <- mem rsi 0
-	rdx >>= 1
-	rcx *= rdx
-	rdx <- rcx
-	rdx *= r8
-	r10 += rdx
-	rsi <- 8
-	rdx <- mem rsp 56
-	rsi += rdx
-	rdx <- mem rsi 0
-	rdx >>= 1
-	rcx *= rdx
-	r10 *= 8
-	rdx <- r10
 	rdx += r11
-	rsi <- rdx
-	rdx <- mem rsp 56
-	rsi += rdx
-	mem rsi 0 <- 1
-	rsi <- r9
-	rsi >>= 1
-	r8 <- 3
-	r8 >>= 1
-	r9 <- rsi
-	r9 += r8
-	r9 <<= 1
-	r9 += 1
-	goto :new_label_ciao_10_global_39
-	:new_label_ciao_10_global_42
-	r10 <- 8
-	r10 *= 1
-	r10 += 8
-	rdx <- mem rsp 56
+	r10 <- rdx
+	r10 *= 8
+	r10 += 32
+	rdx <- mem rsp 40
 	rdx <- rdx
 	rdx += r10
 	rdx <- mem rdx 0
-	rdx >>= 1
+	r10 <- rdx
+	r10 >>= 1
+	r11 <- r9
+	r11 *= r10
+	r11 <<= 1
+	r11 += 1
 	r10 <- rsi
-	r10 <<= 1
-	r10 += 1
-	rdx <- rsi < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_45
-	goto :new_label_ciao_10_global_41
-	:new_label_ciao_10_global_45
-	goto :new_label_ciao_10_global_44
-	:new_label_ciao_10_global_36
-	rdx <- 1
-	mem rsp 16 <- rdx
-	:new_label_ciao_10_global_46
-	rdx <- mem rsp 16
-	rsi <- rdx
-	rsi >>= 1
+	r10 >>= 1
+	rdx <- mem rsp 8
+	r9 <- rdx
+	r9 >>= 1
+	rdx <- 0
 	rdx <- mem rsp 32
-	r8 <- rdx
-	r8 >>= 1
-	rdx <- rsi < r8
+	rdx <- rdx = 0
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_59
+	goto :NNNNNNNNNNNNNNNNNN_global_60
+	:NNNNNNNNNNNNNNNNNN_global_60
+	rdx <- r10
 	rdx <<= 1
 	rdx += 1
-	rsi <- rdx
-	rsi >>= 1
-	cjump rsi = 1 :new_label_ciao_10_global_47
-	rdx <- mem rsp 48
-	rsi <- rdx
-	rsi >>= 1
-	r8 <- 3
-	r8 >>= 1
-	rdx <- rsi
-	mem rsp 48 <- rdx
-	rdx <- mem rsp 48
-	rdx += r8
-	mem rsp 48 <- rdx
-	rdx <- mem rsp 48
+	rdx <- 0
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += rcx
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r10 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_61
+	goto :NNNNNNNNNNNNNNNNNN_global_59
+	:NNNNNNNNNNNNNNNNNN_global_61
+	rdx <- r9
 	rdx <<= 1
-	mem rsp 48 <- rdx
-	rdx <- mem rsp 48
 	rdx += 1
-	mem rsp 48 <- rdx
-	goto :new_label_ciao_10_global_35
-	:new_label_ciao_10_global_47
-	rdx <- mem rsp 8
-	rsi <- rdx
-	rsi >>= 1
-	rdx <- mem rsp 16
-	rdi <- rdx
-	rdi >>= 1
-	r8 <- 0
-	rdx <- mem rsp 72
-	rdx <- rdx = 0
-	cjump rdx = 1 :new_label_ciao_10_global_48
-	r8 <- 8
-	r8 *= 0
-	r8 += 8
-	rdx <- mem rsp 72
+	rdx <- 1
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 32
 	rdx <- rdx
-	rdx += r8
+	rdx += rcx
 	rdx <- mem rdx 0
 	rdx >>= 1
-	r8 <- rsi
-	r8 <<= 1
-	r8 += 1
-	rdx <- rsi < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_49
-	:new_label_ciao_10_global_48
-	mem rsp -8 <- :new_label_ciao_10_global_50_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_50_ret
-	:new_label_ciao_10_global_51
-	r9 <- 24
-	r10 <- 1
-	r8 <- 0
-	rdx <- r10
-	rdx *= rdi
-	r8 += rdx
-	rdi <- 16
-	rdx <- mem rsp 72
-	rdi += rdx
-	rdx <- mem rdi 0
-	rdx >>= 1
-	r10 *= rdx
-	rdx <- r10
-	rdx *= rsi
-	r8 += rdx
-	rdx <- 8
-	rsi <- mem rsp 72
-	rdx += rsi
+	rdx <- r9 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_62
+	goto :NNNNNNNNNNNNNNNNNN_global_59
+	:NNNNNNNNNNNNNNNNNN_global_62
+	goto :NNNNNNNNNNNNNNNNNN_global_63
+	:NNNNNNNNNNNNNNNNNN_global_63
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += 24
 	rdx <- mem rdx 0
+	rdx <- rdx
 	rdx >>= 1
-	r10 *= rdx
-	r8 *= 8
-	rdx <- r8
-	rdx += r9
-	rsi <- rdx
-	rdx <- mem rsp 72
-	rsi += rdx
-	rsi <- mem rsi 0
-	rdx <- mem rsp 16
-	rdi <- rdx
-	rdi >>= 1
-	rdx <- mem rsp 48
-	r8 <- rdx
-	r8 >>= 1
-	r9 <- 0
-	rdx <- mem rsp 64
-	rdx <- rdx = 0
-	cjump rdx = 1 :new_label_ciao_10_global_52
-	r9 <- 8
-	r9 *= 0
-	r9 += 8
-	rdx <- mem rsp 64
+	rcx <- 1
+	rcx *= rdx
+	rdx <- r10
+	rdx *= rcx
+	r10 <- 0
+	r10 += rdx
+	r10 += r9
+	r9 <- r10
+	r9 *= 8
+	r9 += 32
+	rdx <- mem rsp 32
 	rdx <- rdx
 	rdx += r9
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r9 <- rdi
+	r9 <- mem rdx 0
+	r9 <- r9
+	r9 >>= 1
+	r10 <- 9
+	r10 >>= 1
+	r9 <- r9
+	r9 *= r10
 	r9 <<= 1
 	r9 += 1
-	rdx <- rdi < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_53
-	:new_label_ciao_10_global_52
-	mem rsp -8 <- :new_label_ciao_10_global_54_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_54_ret
-	:new_label_ciao_10_global_55
-	r10 <- 24
-	r11 <- 1
-	r9 <- 0
-	rdx <- r11
-	rdx *= r8
-	r9 += rdx
-	r8 <- 16
-	rdx <- mem rsp 64
-	r8 += rdx
-	rdx <- mem r8 0
-	rdx >>= 1
-	r11 *= rdx
-	rdx <- r11
-	rdx *= rdi
-	r9 += rdx
-	rdi <- 8
-	rdx <- mem rsp 64
-	rdi += rdx
-	rdx <- mem rdi 0
-	rdx >>= 1
-	r11 *= rdx
-	r9 *= 8
-	rdx <- r9
-	rdx += r10
-	rdi <- rdx
-	rdx <- mem rsp 64
-	rdi += rdx
-	rdx <- mem rdi 0
-	rsi <- rsi
-	rsi >>= 1
-	r8 <- rdx
-	r8 >>= 1
-	rdi <- rsi
-	rdi *= r8
-	rdi <<= 1
-	rdi += 1
+	r9 <- r9
+	r9 >>= 1
+	r10 <- r11
+	r10 >>= 1
+	r9 <- r9
+	r9 += r10
+	r9 <<= 1
+	r9 += 1
+	r11 <- rsi
+	r11 >>= 1
 	rdx <- mem rsp 8
-	rsi <- rdx
-	rsi >>= 1
-	rdx <- mem rsp 48
-	r8 <- rdx
-	r8 >>= 1
-	r9 <- 0
-	rdx <- mem rsp 56
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- 0
+	rdx <- mem rsp 32
 	rdx <- rdx = 0
-	cjump rdx = 1 :new_label_ciao_10_global_56
-	r9 <- 8
-	r9 *= 0
-	r9 += 8
-	rdx <- mem rsp 56
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_64
+	goto :NNNNNNNNNNNNNNNNNN_global_65
+	:NNNNNNNNNNNNNNNNNN_global_65
+	rdx <- r11
+	rdx <<= 1
+	rdx += 1
+	rdx <- 0
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 32
 	rdx <- rdx
-	rdx += r9
+	rdx += rcx
 	rdx <- mem rdx 0
 	rdx >>= 1
+	rdx <- r11 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_66
+	goto :NNNNNNNNNNNNNNNNNN_global_64
+	:NNNNNNNNNNNNNNNNNN_global_66
+	rdx <- r10
+	rdx <<= 1
+	rdx += 1
+	rdx <- 1
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += rcx
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r10 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_67
+	goto :NNNNNNNNNNNNNNNNNN_global_64
+	:NNNNNNNNNNNNNNNNNN_global_67
+	goto :NNNNNNNNNNNNNNNNNN_global_68
+	:NNNNNNNNNNNNNNNNNN_global_68
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += 24
+	rdx <- mem rdx 0
+	rcx <- rdx
+	rcx >>= 1
+	rdx <- 1
+	rdx *= rcx
+	r11 <- r11
+	r11 *= rdx
+	rdx <- 0
+	rdx += r11
+	rdx += r10
+	r10 <- rdx
+	r10 *= 8
+	r10 += 32
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += r10
+	mem rdx 0 <- r9
+	r9 <- r8
+	r9 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	r8 <- r9
+	r8 += r10
+	r8 <<= 1
+	r8 += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_46
+	:NNNNNNNNNNNNNNNNNN_global_48
+	rdx <- mem rsp 8
+	r9 <- rdx
+	r9 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	rdx <- r9
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx += r10
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx <<= 1
+	mem rsp 8 <- rdx
+	rdx <- mem rsp 8
+	rdx += 1
+	mem rsp 8 <- rdx
+	goto :NNNNNNNNNNNNNNNNNN_global_44
+	:NNNNNNNNNNNNNNNNNN_global_64
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_69_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_69_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_68
+	:NNNNNNNNNNNNNNNNNN_global_59
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_70_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_70_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_63
+	:NNNNNNNNNNNNNNNNNN_global_54
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_71_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_71_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_58
+	:NNNNNNNNNNNNNNNNNN_global_49
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_72_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_72_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_53
+	:NNNNNNNNNNNNNNNNNN_global_73
+	rsi <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_42
+	:NNNNNNNNNNNNNNNNNN_global_74
 	r9 <- rsi
-	r9 <<= 1
-	r9 += 1
-	rdx <- rsi < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_57
-	:new_label_ciao_10_global_56
-	mem rsp -8 <- :new_label_ciao_10_global_58_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_58_ret
-	:new_label_ciao_10_global_59
-	r10 <- 24
+	r9 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	rsi <- r9
+	rsi += r10
+	rsi <<= 1
+	rsi += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_75
+	:NNNNNNNNNNNNNNNNNN_global_75
+	r9 <- rsi
+	r9 >>= 1
+	rdx <- mem rsp 24
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 < r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_76
+	goto :NNNNNNNNNNNNNNNNNN_global_73
+	:NNNNNNNNNNNNNNNNNN_global_76
+	r8 <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_77
+	:NNNNNNNNNNNNNNNNNN_global_77
+	r9 <- r8
+	r9 >>= 1
+	rdx <- mem rsp 16
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 < r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_78
+	goto :NNNNNNNNNNNNNNNNNN_global_74
+	:NNNNNNNNNNNNNNNNNN_global_78
 	r11 <- 1
-	r9 <- 0
-	rdx <- r11
-	rdx *= r8
-	r9 += rdx
-	r8 <- 16
-	rdx <- mem rsp 56
-	r8 += rdx
-	rdx <- mem r8 0
-	rdx >>= 1
-	r11 *= rdx
-	rdx <- r11
-	rdx *= rsi
-	r9 += rdx
-	rdx <- 8
-	rsi <- mem rsp 56
-	rdx += rsi
+	goto :NNNNNNNNNNNNNNNNNN_global_79
+	:NNNNNNNNNNNNNNNNNN_global_79
+	r9 <- r11
+	r9 >>= 1
+	rdx <- mem rsp 0
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 < r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_80
+	goto :NNNNNNNNNNNNNNNNNN_global_81
+	:NNNNNNNNNNNNNNNNNN_global_80
+	r10 <- rsi
+	r10 >>= 1
+	r9 <- r8
+	r9 >>= 1
+	rdx <- 0
+	rdx <- mem rsp 32
+	rdx <- rdx = 0
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_82
+	goto :NNNNNNNNNNNNNNNNNN_global_83
+	:NNNNNNNNNNNNNNNNNN_global_83
+	rdx <- r10
+	rdx <<= 1
+	rdx += 1
+	rdx <- 0
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += rcx
 	rdx <- mem rdx 0
 	rdx >>= 1
-	r11 *= rdx
-	r9 *= 8
+	rdx <- r10 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_84
+	goto :NNNNNNNNNNNNNNNNNN_global_82
+	:NNNNNNNNNNNNNNNNNN_global_84
 	rdx <- r9
+	rdx <<= 1
+	rdx += 1
+	rdx <- 1
+	rdx *= 8
+	rcx <- rdx
+	rcx += 16
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += rcx
+	rdx <- mem rdx 0
+	rdx >>= 1
+	rdx <- r9 < rdx
+	cjump rdx = 1 :NNNNNNNNNNNNNNNNNN_global_85
+	goto :NNNNNNNNNNNNNNNNNN_global_82
+	:NNNNNNNNNNNNNNNNNN_global_85
+	goto :NNNNNNNNNNNNNNNNNN_global_86
+	:NNNNNNNNNNNNNNNNNN_global_86
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += 24
+	rdx <- mem rdx 0
+	rcx <- rdx
+	rcx >>= 1
+	rdx <- 1
+	rdx *= rcx
+	r10 <- r10
+	r10 *= rdx
+	rdx <- 0
 	rdx += r10
-	rsi <- rdx
-	rdx <- mem rsp 56
-	rsi += rdx
-	rsi <- mem rsi 0
-	rsi <- rsi
-	rsi >>= 1
-	r8 <- 9
-	r8 >>= 1
-	rsi <- rsi
-	rsi *= r8
-	rsi <<= 1
-	rsi += 1
-	rsi <- rsi
-	rsi >>= 1
-	r8 <- rdi
-	r8 >>= 1
-	rsi <- rsi
-	rsi += r8
-	rsi <<= 1
-	rsi += 1
-	rdx <- mem rsp 8
-	rdi <- rdx
-	rdi >>= 1
-	rdx <- mem rsp 48
-	r8 <- rdx
-	r8 >>= 1
-	r9 <- 0
-	rdx <- mem rsp 56
-	rdx <- rdx = 0
-	cjump rdx = 1 :new_label_ciao_10_global_60
-	r9 <- 8
-	r9 *= 0
-	r9 += 8
-	rdx <- mem rsp 56
+	rdx += r9
+	r9 <- rdx
+	r9 *= 8
+	r9 += 32
+	rdx <- mem rsp 32
 	rdx <- rdx
 	rdx += r9
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r9 <- rdi
-	r9 <<= 1
-	r9 += 1
-	rdx <- rdi < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_61
-	:new_label_ciao_10_global_60
-	mem rsp -8 <- :new_label_ciao_10_global_62_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_62_ret
-	:new_label_ciao_10_global_63
-	r10 <- 24
-	r11 <- 1
-	r9 <- 0
-	rdx <- r11
-	rdx *= r8
-	r9 += rdx
-	rdx <- 16
-	r8 <- mem rsp 56
-	rdx += r8
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r11 *= rdx
-	rdx <- r11
-	rdx *= rdi
-	r9 += rdx
-	rdx <- 8
-	rdi <- mem rsp 56
-	rdx += rdi
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r11 *= rdx
-	r9 *= 8
-	rdx <- r9
-	rdx += r10
-	rdx <- rdx
-	rdi <- mem rsp 56
-	rdx += rdi
-	mem rdx 0 <- rsi
-	rdx <- mem rsp 16
-	rsi <- rdx
-	rsi >>= 1
-	r8 <- 3
-	r8 >>= 1
-	rdx <- rsi
-	mem rsp 16 <- rdx
-	rdx <- mem rsp 16
-	rdx += r8
-	mem rsp 16 <- rdx
-	rdx <- mem rsp 16
-	rdx <<= 1
-	mem rsp 16 <- rdx
-	rdx <- mem rsp 16
-	rdx += 1
-	mem rsp 16 <- rdx
-	goto :new_label_ciao_10_global_46
-	:new_label_ciao_10_global_49
-	r8 <- 8
-	r8 *= 1
-	r8 += 8
-	rdx <- mem rsp 72
-	rdx <- rdx
-	rdx += r8
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r8 <- rdi
+	mem rdx 0 <- 1
+	r9 <- r11
+	r9 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	r11 <- r9
+	r11 += r10
+	r11 <<= 1
+	r11 += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_79
+	:NNNNNNNNNNNNNNNNNN_global_81
+	r9 <- r8
+	r9 >>= 1
+	r10 <- 3
+	r10 >>= 1
+	r8 <- r9
+	r8 += r10
 	r8 <<= 1
 	r8 += 1
-	rdx <- rdi < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_64
-	goto :new_label_ciao_10_global_48
-	:new_label_ciao_10_global_64
-	goto :new_label_ciao_10_global_51
-	:new_label_ciao_10_global_53
-	r9 <- 8
-	r9 *= 1
-	r9 += 8
-	rdx <- mem rsp 64
-	rdx <- rdx
-	rdx += r9
-	rdx <- mem rdx 0
-	rdx >>= 1
+	goto :NNNNNNNNNNNNNNNNNN_global_77
+	:NNNNNNNNNNNNNNNNNN_global_82
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_87_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_87_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_86
+	:NNNNNNNNNNNNNNNNNN_global_88
+	rsi <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_75
+	:NNNNNNNNNNNNNNNNNN_global_89
 	r9 <- r8
-	r9 <<= 1
-	r9 += 1
-	rdx <- r8 < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_65
-	goto :new_label_ciao_10_global_52
-	:new_label_ciao_10_global_65
-	goto :new_label_ciao_10_global_55
-	:new_label_ciao_10_global_57
-	r9 <- 8
-	r9 *= 1
-	r9 += 8
-	rdx <- mem rsp 56
+	r9 >>= 1
+	rdx <- mem rsp 16
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 = r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_88
+	goto :NNNNNNNNNNNNNNNNNN_global_40
+	:NNNNNNNNNNNNNNNNNN_global_90
+	r9 <- rsi
+	r9 >>= 1
+	rdx <- mem rsp 24
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 = r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_89
+	goto :NNNNNNNNNNNNNNNNNN_global_40
+	:NNNNNNNNNNNNNNNNNN_global_39
+	rdx <- 0
+	rdx *= 8
 	rdx <- rdx
-	rdx += r9
-	rdx <- mem rdx 0
-	rdx >>= 1
-	r9 <- r8
-	r9 <<= 1
-	r9 += 1
-	rdx <- r8 < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_66
-	goto :new_label_ciao_10_global_56
-	:new_label_ciao_10_global_66
-	goto :new_label_ciao_10_global_59
-	:new_label_ciao_10_global_61
-	r9 <- 8
-	r9 *= 1
-	r9 += 8
-	rdx <- mem rsp 56
+	rdx += 16
+	rsi <- rdi
+	rsi += rdx
+	rdx <- mem rsi 0
+	mem rsp 24 <- rdx
+	rdx <- 1
+	rdx *= 8
+	rsi <- rdx
+	rsi += 16
+	rdx <- mem rsp 40
 	rdx <- rdx
-	rdx += r9
+	rdx += rsi
 	rdx <- mem rdx 0
-	rdx >>= 1
-	r9 <- r8
-	r9 <<= 1
-	r9 += 1
-	rdx <- r8 < rdx
-	cjump rdx = 1 :new_label_ciao_10_global_67
-	goto :new_label_ciao_10_global_60
-	:new_label_ciao_10_global_67
-	goto :new_label_ciao_10_global_63
+	mem rsp 16 <- rdx
+	rdx <- 0
+	rdx *= 8
+	rsi <- rdx
+	rsi += 16
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += rsi
+	rsi <- mem rdx 0
+	rdx <- 1
+	rdx *= 8
+	r8 <- rdx
+	r8 += 16
+	rdx <- mem rsp 32
+	rdx <- rdx
+	rdx += r8
+	r8 <- mem rdx 0
+	rdx <- 1
+	rdx *= 8
+	rdx <- rdx
+	rdx += 16
+	r9 <- rdi
+	r9 += rdx
+	rdx <- mem r9 0
+	mem rsp 0 <- rdx
+	rdx <- mem rsp 0
+	r9 <- rdx
+	r9 >>= 1
+	rdx <- 0
+	rdx *= 8
+	r10 <- rdx
+	r10 += 16
+	rdx <- mem rsp 40
+	rdx <- rdx
+	rdx += r10
+	rdx <- mem rdx 0
+	r10 <- rdx
+	r10 >>= 1
+	rdx <- r9 = r10
+	rdx <<= 1
+	rdx += 1
+	r9 <- rdx
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_90
+	goto :NNNNNNNNNNNNNNNNNN_global_40
 )
 (@totalSum
-	1 3
+	1 1
 	rdx <- rdi
-	rsi <- 8
-	rsi *= 0
-	rsi += 8
+	:NNNNNNNNNNNNNNNNNN_global_91
+	goto :NNNNNNNNNNNNNNNNNN_global_92
+	:NNNNNNNNNNNNNNNNNN_global_93
+	rax <- r10
+	return
+	:NNNNNNNNNNNNNNNNNN_global_94
+	r9 <- rdi
+	r9 >>= 1
+	rax <- 3
+	rax >>= 1
+	rdi <- r9
+	rdi += rax
+	rdi <<= 1
+	rdi += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_95
+	:NNNNNNNNNNNNNNNNNN_global_95
+	r9 <- rdi
+	r9 >>= 1
+	rax <- mem rsp 0
+	rax <- rax
+	rax >>= 1
+	rax <- r9 < rax
+	rax <<= 1
+	rax += 1
+	r9 <- rax
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_96
+	goto :NNNNNNNNNNNNNNNNNN_global_93
+	:NNNNNNNNNNNNNNNNNN_global_96
+	r8 <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_97
+	:NNNNNNNNNNNNNNNNNN_global_97
+	r9 <- r8
+	r9 >>= 1
+	rax <- rsi
+	rax >>= 1
+	rax <- r9 < rax
+	rax <<= 1
+	rax += 1
+	r9 <- rax
+	r9 >>= 1
+	cjump r9 = 1 :NNNNNNNNNNNNNNNNNN_global_98
+	goto :NNNNNNNNNNNNNNNNNN_global_94
+	:NNNNNNNNNNNNNNNNNN_global_98
+	rcx <- rdi
+	rcx >>= 1
+	r11 <- r8
+	r11 >>= 1
+	rax <- 0
+	rax <- rdx = 0
+	cjump rax = 1 :NNNNNNNNNNNNNNNNNN_global_99
+	goto :NNNNNNNNNNNNNNNNNN_global_100
+	:NNNNNNNNNNNNNNNNNN_global_100
+	rax <- rcx
+	rax <<= 1
+	rax += 1
+	rax <- 0
+	rax *= 8
+	r9 <- rax
+	r9 += 16
+	rax <- rdx
+	rax += r9
+	rax <- mem rax 0
+	rax >>= 1
+	rax <- rcx < rax
+	cjump rax = 1 :NNNNNNNNNNNNNNNNNN_global_101
+	goto :NNNNNNNNNNNNNNNNNN_global_99
+	:NNNNNNNNNNNNNNNNNN_global_101
+	rax <- r11
+	rax <<= 1
+	rax += 1
+	rax <- 1
+	rax *= 8
+	r9 <- rax
+	r9 += 16
+	rax <- rdx
+	rax += r9
+	rax <- mem rax 0
+	rax >>= 1
+	rax <- r11 < rax
+	cjump rax = 1 :NNNNNNNNNNNNNNNNNN_global_102
+	goto :NNNNNNNNNNNNNNNNNN_global_99
+	:NNNNNNNNNNNNNNNNNN_global_102
+	goto :NNNNNNNNNNNNNNNNNN_global_103
+	:NNNNNNNNNNNNNNNNNN_global_103
+	r9 <- r10
+	r9 >>= 1
+	rax <- rdx
+	rax += 24
+	rax <- mem rax 0
+	r10 <- rax
+	r10 >>= 1
+	rax <- 1
+	rax *= r10
+	r10 <- rcx
+	r10 *= rax
+	rax <- 0
+	rax += r10
+	rax += r11
+	r10 <- rax
+	r10 *= 8
+	r10 += 32
+	rax <- rdx
+	rax += r10
+	rax <- mem rax 0
+	rax <- rax
+	rax >>= 1
+	r10 <- r9
+	r10 += rax
+	r10 <<= 1
+	r10 += 1
+	r9 <- r8
+	r9 >>= 1
+	rax <- 3
+	rax >>= 1
+	r8 <- r9
+	r8 += rax
+	r8 <<= 1
+	r8 += 1
+	goto :NNNNNNNNNNNNNNNNNN_global_97
+	:NNNNNNNNNNNNNNNNNN_global_99
+	mem rsp -8 <- :NNNNNNNNNNNNNNNNNN_global_104_ret
+	rdi <- 0
+	call tensor-error 1
+	:NNNNNNNNNNNNNNNNNN_global_104_ret
+	goto :NNNNNNNNNNNNNNNNNN_global_103
+	:NNNNNNNNNNNNNNNNNN_global_92
+	rax <- 0
+	rax *= 8
+	rsi <- rax
+	rsi += 16
 	rax <- rdx
 	rax += rsi
 	rax <- mem rax 0
 	mem rsp 0 <- rax
-	rsi <- 8
-	rsi *= 1
-	rsi += 8
+	rax <- 1
+	rax *= 8
+	rsi <- rax
+	rsi += 16
 	rax <- rdx
 	rax += rsi
-	rdi <- mem rax 0
-	rsi <- 1
-	r8 <- 1
-	:new_label_ciao_10_global_68
-	r10 <- rsi
-	r10 >>= 1
-	rax <- mem rsp 0
-	rax <- rax
-	rax >>= 1
-	rax <- r10 < rax
-	rax <<= 1
-	rax += 1
-	r10 <- rax
-	r10 >>= 1
-	cjump r10 = 1 :new_label_ciao_10_global_69
-	rax <- r8
-	return
-	:new_label_ciao_10_global_69
-	r9 <- 1
-	:new_label_ciao_10_global_70
-	r10 <- r9
-	r10 >>= 1
-	rax <- rdi
-	rax >>= 1
-	rax <- r10 < rax
-	rax <<= 1
-	rax += 1
-	r10 <- rax
-	r10 >>= 1
-	cjump r10 = 1 :new_label_ciao_10_global_71
-	r10 <- rsi
-	r10 >>= 1
-	rax <- 3
-	rax >>= 1
-	rsi <- r10
-	rsi += rax
-	rsi <<= 1
-	rsi += 1
-	goto :new_label_ciao_10_global_68
-	:new_label_ciao_10_global_71
-	r11 <- rsi
-	r11 >>= 1
-	rcx <- r9
-	rcx >>= 1
-	r10 <- 0
-	rax <- rdx = 0
-	cjump rax = 1 :new_label_ciao_10_global_72
-	rax <- 8
-	rax *= 0
-	rax += 8
-	r10 <- rdx
-	r10 += rax
-	rax <- mem r10 0
-	rax >>= 1
-	r10 <- r11
-	r10 <<= 1
-	r10 += 1
-	rax <- r11 < rax
-	cjump rax = 1 :new_label_ciao_10_global_73
-	:new_label_ciao_10_global_72
-	mem rsp -8 <- :new_label_ciao_10_global_74_ret
-	rdi <- 0
-	call tensor-error 1
-	:new_label_ciao_10_global_74_ret
-	:new_label_ciao_10_global_75
-	r10 <- 24
-	rax <- 1
-	mem rsp 16 <- rax
-	rax <- 0
-	mem rsp 8 <- rax
-	rax <- mem rsp 16
-	rax <- rax
-	rax *= rcx
-	rcx <- mem rsp 8
-	rcx += rax
-	mem rsp 8 <- rcx
-	rax <- 16
-	rax += rdx
-	rcx <- mem rax 0
-	rcx >>= 1
-	rax <- mem rsp 16
-	rax *= rcx
-	mem rsp 16 <- rax
-	rax <- mem rsp 16
-	rcx <- rax
-	rcx *= r11
-	rax <- mem rsp 8
-	rax += rcx
-	mem rsp 8 <- rax
-	rax <- 8
-	rax += rdx
-	r11 <- mem rax 0
-	r11 >>= 1
-	rax <- mem rsp 16
-	rax *= r11
-	mem rsp 16 <- rax
-	rax <- mem rsp 8
-	rax *= 8
-	mem rsp 8 <- rax
-	rax <- mem rsp 8
-	rax <- rax
-	rax += r10
-	rax <- rax
-	rax += rdx
-	rax <- mem rax 0
-	r10 <- r8
-	r10 >>= 1
-	rax <- rax
-	rax >>= 1
-	r8 <- r10
-	r8 += rax
-	r8 <<= 1
-	r8 += 1
-	r10 <- r9
-	r10 >>= 1
-	rax <- 3
-	rax >>= 1
-	r9 <- r10
-	r9 += rax
-	r9 <<= 1
-	r9 += 1
-	goto :new_label_ciao_10_global_70
-	:new_label_ciao_10_global_73
-	rax <- 8
-	rax *= 1
-	rax += 8
-	r10 <- rdx
-	r10 += rax
-	rax <- mem r10 0
-	rax >>= 1
-	r10 <- rcx
-	r10 <<= 1
-	r10 += 1
-	rax <- rcx < rax
-	cjump rax = 1 :new_label_ciao_10_global_76
-	goto :new_label_ciao_10_global_72
-	:new_label_ciao_10_global_76
-	goto :new_label_ciao_10_global_75
+	rsi <- mem rax 0
+	rdi <- 1
+	r10 <- 1
+	goto :NNNNNNNNNNNNNNNNNN_global_95
 )
 )

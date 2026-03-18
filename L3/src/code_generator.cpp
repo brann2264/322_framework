@@ -414,10 +414,12 @@ namespace L3
       }
 
       context->generate_trees(instructions);
+      context->merge_trees();
 
       for (auto &tree : context->trees)
       {
-        tree->tile_tree();
+        tree->tile_tree(*tree);
+        std::reverse(tree->tiles.begin(), tree->tiles.end());
 
         for (auto &tile : tree->tiles)
         {
